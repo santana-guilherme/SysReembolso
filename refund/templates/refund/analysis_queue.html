@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Rembolso</title>
+</head>
+
+<body>
+  <h2>Solicitações em análise</h2>
+  {%if solicitations_list %}
+  <table>
+    <thead>
+      <tr>
+        <td>Nome</td>
+        <td>Preço</td>
+        <td>Data criação</td>
+        <td>Última modificação</td>
+        <td>Estado</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for solicitation in solicitations_list %}
+      <tr>
+        <td> <a href="/refund/solicitation_detail/{{solicitation.id}}">{{ solicitation.name |title }}</a> </td>
+        <td> R$ {{ solicitation.price }}</td>
+        <td> {{ solicitation.created | date:"d-m-Y"}}</td>
+        <td> {{ solicitation.updated | date:"d-m-Y"}}</td>
+        <td> {{ solicitation.get_state }} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Não há pedidos de reembolsos em análise</p>
+  {% endif %}
+</body>
+
+</html>

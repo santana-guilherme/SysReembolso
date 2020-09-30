@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Rembolso</title>
+</head>
+
+<body>
+  <h2>Detalhe do pedido</h2>
+  <table>
+    <thead>
+      <tr>
+        <td>Nome</td>
+        <td>Preço</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> {{ refund_bundle.user.username }} </td>
+        <td> R$ {{ refund_bundle.price }} </td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>Solicitações</h4>
+  <ul>
+    {% for solicitation in refund_bundle.solicitations.all %}
+      <li> <a href='/refund/solicitation_detail/{{solicitation.id}}'> {{ solicitation.name | title}} </a> -- R$ {{solicitation.price}} </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

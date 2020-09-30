@@ -1,6 +1,6 @@
-from django.db import models
-from django.contrib.auth.models import User
 import logging
+from django.db import models
+from django.conf import settings
 
 REFUNDBUNDLE_STATE = {
     0: 'AGUARDANDO PAGAMENTO',
@@ -15,7 +15,7 @@ SOLICITATION_STATE = {
 
 
 class RefundQueue(models.Model):
-
+    """Base class for Queue"""
     class Meta:
         abstract = True
 
@@ -27,8 +27,9 @@ class RefundQueue(models.Model):
         pass
 
     @classmethod
-    def load(self):
-        obj, _ = self.objects.get_or_create(pk=1)
+    def load(cls):
+        """ Singleton """
+        obj, _ = cls.objects.get_or_create(pk=1)
         return obj
 
     def size(self):
@@ -51,17 +52,42 @@ class RefundQueue(models.Model):
         return self.queue.pop(0)
 
 
-class AnalysisQueue(RefundQueue):
-    # TODO: talvez deva ter um add/create solicitation
-    pass
+class FinishQueue(RefundQueue):
+    """
+    Queue responsible for storing RefundBundles that where accepted and paid.
+    """
+    def add_refund_bundle(self):
+        pass
 
+
+class AnalysisQueue(RefundQueue):
+    """
+    Queue responsible for group solicitations waiting for analysis.
+    """
+    def create_solicitation(self, user, name=None): #and claim_check
+        """
+        Create solicitation and adds to queue.
+        """
+        if(user is not None): #and verify if user is not a analyst
+            solicitation = Solicitation(name=name, queue=self, user=user)
+            solicitation.save()
+            return solicitation
+        return None
 
 class PaymentQueue(RefundQueue):
 
+    """
+    Queue responsible for gathering solicitations in RefundBundle objects
+    while waiting for payment.
+    """
+
     def add_solicitation(self, solicitation_id):
+        """
+        Add solicitation to refund bundle on queue.
+        """
         solicitation = Solicitation.objects.filter(id=solicitation_id).first()
         refund_bundle = self.__search_for_refund_bundle(solicitation)
-        refund_bundle.solicitations.add(solicitation)  # n sei se precisa disso
+        refund_bundle.solicitations.add(solicitation)
         refund_bundle.price += solicitation.price
         refund_bundle.save()
 
@@ -75,16 +101,26 @@ class PaymentQueue(RefundQueue):
             if solicitation.user == refund.user:
                 refund_bundle = refund
 
-        if refund_bundle != None and refund_bundle.accepting_solicitations:
+        if refund_bundle is not None and refund_bundle.accepting_solicitations:
             return refund_bundle
 
-        # create refund bundle
-        refund_bundle = RefundBundle(queue=self, user=solicitation.user)
+        return self.__create_refund_bundle(solicitation.user)
+
+    def __create_refund_bundle(self, user) -> object:
+        """
+        Create refund bundle with user passed in parameter, append to queue and
+        returns it.
+        """
+        refund_bundle = RefundBundle(queue=self, user=user)
         refund_bundle.save()
         return refund_bundle
 
 
 class RefundBundle(models.Model):
+    """
+    Collection of solicitations used to perform payment and
+    store the refund memo.
+    """
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
     account_number = models.IntegerField(null=True)
@@ -92,7 +128,7 @@ class RefundBundle(models.Model):
     refund_memo = models.ImageField()
     accepting_solicitations = models.BooleanField(default=True)
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='refund',
         null=False,
         on_delete=models.CASCADE
@@ -100,11 +136,11 @@ class RefundBundle(models.Model):
     queue = models.ForeignKey(
         PaymentQueue,
         null=False,
-        on_delete=models.CASCADE,  # trocar isso aqui
+        on_delete=models.PROTECT,
         related_name='queue'
     )
 
-    def setPrice(self):
+    def update_price(self):
         totalPrice = 0
         for solicitation in self.solicitations.all():
             totalPrice += solicitation.price
@@ -129,7 +165,7 @@ class Solicitation(models.Model):
     state = models.IntegerField(default=0)
     claim_check = models.ImageField()
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='solicitations',
         on_delete=models.CASCADE,
         null=False
@@ -147,27 +183,27 @@ class Solicitation(models.Model):
         on_delete=models.CASCADE
     )
 
-    def save(self, **kwargs):
-        if not self.id and not self.name:
-            newId = Solicitation.objects.aggregate(
+    def save(self, *args, **kwargs):
+        if self.id is None and not self.name:
+            new_id = Solicitation.objects.aggregate(
                 id_max=models.Max('id'))['id_max']
-            if not newId:
-                newId = 1
-            self.name = f'Nº {newId}'
-            self.id = newId
-        super().save(*kwargs)
+            if not new_id:
+                new_id = 1
+            self.name = f'Nº {new_id}'
+            self.id = new_id
+        super().save(*args, **kwargs)
 
-    def updatePrice(self):
-        totalPrice = 0.0
+    def update_price(self):
+        total_price = 0.0
         for item in self.items.all():
             if item.accepted:
-                totalPrice += item.price
-        self.price = totalPrice
+                total_price += item.price
+        self.price = total_price
         self.save()
 
     def all_itens_resolved(self):
         for item in self.items.all():
-            if item.accepted == None:
+            if item.accepted is None:
                 return False
         return True
 
@@ -180,13 +216,9 @@ class Solicitation(models.Model):
             # i think is better for security
             payment_queue.add_solicitation(self.id)
 
-    def __add_to_refund_bundle(self, refund_bundle):
-        refund_bundle.solicitations.create(self)
-        refund_bundle.save()
-
     def finalize(self):
         if self.all_itens_resolved():
-            if self.price > 0:  # verifica se refund_bundle tem uma nota fiscal
+            if self.price > 0:  # falta verificar se refund_bundle tem uma nota fiscal
                 self.state = 2
             else:
                 self.state = 2
@@ -196,6 +228,12 @@ class Solicitation(models.Model):
 
     def get_state(self):
         return SOLICITATION_STATE[self.state]
+
+    def add_item(self, item: object):
+        """
+        Add solicitation item to solicitation
+        """
+        self.items.append(item)
 
 
 class ItemSolicitation(models.Model):

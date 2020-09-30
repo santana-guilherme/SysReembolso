@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Rembolso</title>
+</head>
+
+<body>
+  <h2>Detalhe solicitação</h2>
+  <table>
+    <thead>
+      <tr>
+        <td>Nome</td>
+        <td>Preço</td>
+        <td>Data criação</td>
+        <td>Última modificação</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> {{ solicitation.name }} </td>
+        <td> R$ {{ solicitation.price }} </td>
+        <td> {{ solicitation.created | date:"d/m/Y"}} </td>
+        <td> {{ solicitation.updated | date:"d/m/Y"}} </td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>Solicitation items</h4>
+  <ul>
+    {% for item in solicitation.items.all %}
+      <li> {{ item.name | title}} -- R$ {{item.price}} -- {{item.accepted}}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
