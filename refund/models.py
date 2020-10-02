@@ -23,9 +23,6 @@ class RefundQueue(models.Model):
         self.id = 1
         super().save(*args, **kwargs)
 
-    def delete(self):
-        pass
-
     @classmethod
     def load(cls):
         """ Singleton """
@@ -56,6 +53,7 @@ class FinishQueue(RefundQueue):
     """
     Queue responsible for storing RefundBundles that where accepted and paid.
     """
+
     def add_refund_bundle(self):
         pass
 
@@ -64,15 +62,19 @@ class AnalysisQueue(RefundQueue):
     """
     Queue responsible for group solicitations waiting for analysis.
     """
-    def create_solicitation(self, user, name=None): #and claim_check
+
+    def create_solicitation(self, user, claim_check, name=None):  # and claim_check
         """
         Create solicitation and adds to queue.
         """
-        if(user is not None): #and verify if user is not a analyst
-            solicitation = Solicitation(name=name, queue=self, user=user)
+        if(user is not None):  # and verify if user is not a analyst
+            solicitation = Solicitation(
+                name=name, queue=self, user=user, claim_check=claim_check
+            )
             solicitation.save()
             return solicitation
         return None
+
 
 class PaymentQueue(RefundQueue):
 
@@ -141,10 +143,10 @@ class RefundBundle(models.Model):
     )
 
     def update_price(self):
-        totalPrice = 0
+        total_price = 0
         for solicitation in self.solicitations.all():
-            totalPrice += solicitation.price
-        self.price = totalPrice
+            total_price += solicitation.price
+        self.price = total_price
 
     def finish_refund(self):
         if self.refund_memo != None:
@@ -163,7 +165,7 @@ class Solicitation(models.Model):
     name = models.CharField(max_length=100, default='no name')
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
-    claim_check = models.ImageField()
+    claim_check = models.ImageField(upload_to='images/')
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='solicitations',

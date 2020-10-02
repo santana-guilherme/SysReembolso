@@ -2,4 +2,5 @@ env/
 refund_ws.*
 .vscode/
 db.sqlite3
+images/*
 *.pyc

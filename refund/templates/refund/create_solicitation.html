@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  {% load static %}
+    <meta charset='utf-8'/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'refund/create_solicitation.js' %}"></script>
+    <title>Reembolso</title>
+  </head>
+  <body>
+    <form action='/refund/create_solicitation' enctype="multipart/form-data" method='post'>
+      {% csrf_token %}
+      {{form.as_p}}
+      <table>
+        {{formset}}
+      </table>
+      <button id='add_item' type="button">+</button>
+      <input type='submit' value='Enviar'/>
+    </form>
+    <div style='display:none' id ='empty_form'>
+      <table>
+        {{ formset.empty_form }}
+      </table>
+    </div>
+  </body>
+</html>
