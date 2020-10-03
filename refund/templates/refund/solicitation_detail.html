@@ -15,6 +15,7 @@
         <td>Preço</td>
         <td>Data criação</td>
         <td>Última modificação</td>
+        <td>Nota fiscal</td>
       </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
         <td> R$ {{ solicitation.price }} </td>
         <td> {{ solicitation.created | date:"d/m/Y"}} </td>
         <td> {{ solicitation.updated | date:"d/m/Y"}} </td>
+        <td> <img src="{{solicitation.claim_check.url}}" width='100' /> </td>
       </tr>
     </tbody>
   </table>

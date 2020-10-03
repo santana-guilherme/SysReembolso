@@ -6,6 +6,7 @@ urlpatterns = [
   path('analysis', views.analysis_queue, name='analysis_queue'),
   path('payment', views.payment_queue, name='payment_queue'),
   path('create_solicitation', views.create_solicitation, name='create_solicitation'),
+  path('analyse_solicitation/<int:solicitation_id>', views.analyse_solicitation, name='analyse_solicitation'),
   path(
     'solicitation_detail/<int:solicitation_id>/',
     views.solicitation_detail,

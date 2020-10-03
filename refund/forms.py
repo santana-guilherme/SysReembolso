@@ -8,13 +8,9 @@ class SolicitationForm(ModelForm):
         fields = ['name', 'claim_check']
 
 
-class ItemSolicitationForm(ModelForm):
-    class Meta:
-        model = ItemSolicitation
-        fields = ['name', 'price']
-        exclude = ()
-
-
-ItemSolicitationFormSet = modelformset_factory(
+CreateItemSolicitationFormSet = modelformset_factory(
     ItemSolicitation,fields=('name', 'price'))
 
+UpdateItemsSolicitationFormSet = modelformset_factory(
+  ItemSolicitation, fields=('name', 'price', 'accepted')
+)

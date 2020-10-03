@@ -63,16 +63,17 @@ class AnalysisQueue(RefundQueue):
     Queue responsible for group solicitations waiting for analysis.
     """
 
-    def create_solicitation(self, user, claim_check, name=None):  # and claim_check
+    def create_solicitation(self, user:settings.AUTH_USER_MODEL, claim_check, name=None):  # and claim_check
         """
         Create solicitation and adds to queue.
         """
-        if(user is not None):  # and verify if user is not a analyst
+        if user is not None:  # and verify if user is not a analyst
             solicitation = Solicitation(
                 name=name, queue=self, user=user, claim_check=claim_check
             )
             solicitation.save()
             return solicitation
+        logging.warning('Couldn\'t create solicitation because user as not passed')
         return None
 
 
@@ -165,7 +166,7 @@ class Solicitation(models.Model):
     name = models.CharField(max_length=100, default='no name')
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
-    claim_check = models.ImageField(upload_to='images/')
+    claim_check = models.ImageField(upload_to='claim_checks/')
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='solicitations',
@@ -181,8 +182,9 @@ class Solicitation(models.Model):
     queue = models.ForeignKey(
         AnalysisQueue,
         related_name='queue',
-        null=False,
-        on_delete=models.CASCADE
+        null=True,
+        on_delete=models.CASCADE,
+        default=1
     )
 
     def save(self, *args, **kwargs):
