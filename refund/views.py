@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from .models import AnalysisQueue, PaymentQueue, Solicitation, RefundBundle, ItemSolicitation
-from .forms import CreateItemSolicitationFormSet, SolicitationForm, UpdateItemsSolicitationFormSet
+from .forms import CreateItemSolicitationFormSet, SolicitationForm, AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
 # Create your views here.
 
 
@@ -11,7 +11,7 @@ def index(request):
 
 
 def analysis_queue(request):
-    solicitations = AnalysisQueue.load().queue.all()
+    solicitations = AnalysisQueue.load().solicitation_queue.all()
     return render(
         request,
         'refund/analysis_queue.html',
@@ -20,7 +20,7 @@ def analysis_queue(request):
 
 
 def payment_queue(request):
-    refund_bundle_list = PaymentQueue.load().queue.all()
+    refund_bundle_list = PaymentQueue.load().refund_queue.all()
     return render(
         request,
         'refund/payment_queue.html',
@@ -80,16 +80,40 @@ def create_solicitation(request):
 
 def analyse_solicitation(request, solicitation_id):
     if request.method == 'POST':
-        ...
-    else:
+        formset = AnalyseItemsSolicitationFormSet(request.POST)
         solicitation = get_object_or_404(Solicitation, id=solicitation_id)
-        form = SolicitationForm(instance=solicitation)
-        formset = UpdateItemsSolicitationFormSet(
-            prefix='items', queryset=ItemSolicitation.objects.filter(solicitation=solicitation)
+        if formset.is_valid():
+            for item in formset:
+                item.save()
+            solicitation.authorize()
+            return HttpResponse('Foi')
+    else:
+        solicitation = get_object_or_404(Solicitation, id=solicitation_id, state=0)
+        formset = AnalyseItemsSolicitationFormSet(
+            queryset=ItemSolicitation.objects.filter(
+                solicitation=solicitation),
         )
 
     return render(
         request,
         'refund/analyse_solicitation.html',
-        {'form': form, 'formset': formset}
+        {'solicitation': solicitation, 'formset': formset}
+    )
+
+
+def pay_refundbundle(request, refund_bundle_id):
+    if request.method == 'POST':
+        form = UpdateRefundBundleForm(request.POST, request.FILES)
+        if form.is_valid():
+            for refund_bundle in form.save(commit=False):
+                refund_bundle.finish_refund()
+    else:
+        form = UpdateRefundBundleForm(
+            queryset=RefundBundle.objects.filter(id=refund_bundle_id)
+        )
+
+    return render(
+        request,
+        'refund/pay_refund.html',
+        {'form': form}
     )

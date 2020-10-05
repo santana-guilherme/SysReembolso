@@ -1,0 +1,8 @@
+{% extends "refund/base.html" %}
+{% block content %}
+  <form action='/refund/pay_refund/' enctype="multipart/form-data" method='post'>
+  {% csrf_token %}
+    {{form}}
+    <button>Enviar</button>
+  </form>
+{% endblock content %}
