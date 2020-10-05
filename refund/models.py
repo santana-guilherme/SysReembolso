@@ -18,7 +18,7 @@ class RefundQueue(models.Model):
     """Base class for Queue"""
     class Meta:
         abstract = True
-
+    
     def save(self, *args, **kwargs):
         self.id = 1
         super().save(*args, **kwargs)
@@ -28,35 +28,6 @@ class RefundQueue(models.Model):
         """ Singleton """
         obj, _ = cls.objects.get_or_create(pk=1)
         return obj
-
-    def size(self):
-        return len(self.queue)
-
-    def empty(self):
-        return len(self.queue) == 0
-
-    def front(self):
-        return self.queue[0]
-
-    def back(self):
-        return self.queue[-1]
-
-    def push(self, element):
-        self.queue.append(element)
-        return 1
-
-    def pop(self):
-        return self.queue.pop(0)
-
-
-class FinishQueue(RefundQueue):
-    """
-    Queue responsible for storing RefundBundles that where accepted and paid.
-    """
-
-    def add_refund_bundle(self):
-        pass
-
 
 class AnalysisQueue(RefundQueue):
     """
@@ -119,6 +90,7 @@ class PaymentQueue(RefundQueue):
         return refund_bundle
 
 
+
 class RefundBundle(models.Model):
     """
     Collection of solicitations used to perform payment and
@@ -126,7 +98,7 @@ class RefundBundle(models.Model):
     """
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
-    account_number = models.IntegerField(null=True)
+    account_number = models.IntegerField(null=True) #TODO: null false
     pix = models.CharField(null=True, max_length=20)
     refund_memo = models.ImageField()
     accepting_solicitations = models.BooleanField(default=True)
@@ -138,7 +110,7 @@ class RefundBundle(models.Model):
     )
     queue = models.ForeignKey(
         PaymentQueue,
-        null=False,
+        null=True, #TODO: rethink
         on_delete=models.PROTECT,
         related_name='queue'
     )
@@ -150,11 +122,12 @@ class RefundBundle(models.Model):
         self.price = total_price
 
     def finish_refund(self):
-        if self.refund_memo != None:
+        if self.refund_memo is not None:
             try:
                 for solicitation in self.solicitations.all():
                     solicitation.finalize()
                 self.state = 1
+                self.queue = None
                 self.save()
             except RuntimeError as e:
                 logging.error(str(e))
@@ -215,13 +188,13 @@ class Solicitation(models.Model):
         if self.all_itens_resolved():
             self.state = 1
             self.queue = None
-            self.save()
+            self.update_price()
             payment_queue = PaymentQueue.load()
             # i think is better for security
             payment_queue.add_solicitation(self.id)
 
     def finalize(self):
-        if self.all_itens_resolved():
+        if self.all_itens_resolved() and self.state == 1:
             if self.price > 0:  # falta verificar se refund_bundle tem uma nota fiscal
                 self.state = 2
             else:

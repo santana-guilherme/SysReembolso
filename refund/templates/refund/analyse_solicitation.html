@@ -1,3 +1,27 @@
 {% extends "refund/base.html" %}
 {% block content %}
+  <form action='/refund/analyse_solicitation/{{solicitation.id}}' method='post'>
+  {% csrf_token %}
+    <table>
+      <thead>
+        <tr>
+          <td>Nome</td>
+          <td>Preço</td>
+          <td>Nota fiscal</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{solicitation.name}}</td>
+          <td>{{solicitation.price}}</td>
+          <td><img src= "{{solicitation.claim_check.url}}" width='100'/></td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      {{formset}}
+    </table>
+    <button>Atualizar</button>
+  </form>
+
 {% endblock content %}
