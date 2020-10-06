@@ -11,7 +11,7 @@ def index(request):
 
 
 def analysis_queue(request):
-    solicitations = AnalysisQueue.load().solicitation_queue.all()
+    solicitations = AnalysisQueue.load().queue.all()
     return render(
         request,
         'refund/analysis_queue.html',
@@ -20,7 +20,7 @@ def analysis_queue(request):
 
 
 def payment_queue(request):
-    refund_bundle_list = PaymentQueue.load().refund_queue.all()
+    refund_bundle_list = PaymentQueue.load().queue.all()
     return render(
         request,
         'refund/payment_queue.html',

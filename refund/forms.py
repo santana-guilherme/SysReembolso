@@ -31,7 +31,7 @@ class UpdateRefundBundleModelForm(ModelForm):
         model = RefundBundle
         fields = ['price', 'account_number', 'pix', 'refund_memo']
     price = forms.FloatField(disabled=True)
-    account_number = forms.CharField(disabled=True, required=False)
+    account_number = forms.IntegerField(disabled=True, required=False)
     pix = forms.CharField(disabled=True, required=False)
 
 #Apperently modelform_factory has a problem validating disabled fields

@@ -1,6 +1,9 @@
 import logging
 from django.db import models
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
+
 
 REFUNDBUNDLE_STATE = {
     0: 'AGUARDANDO PAGAMENTO',
@@ -34,7 +37,7 @@ class AnalysisQueue(RefundQueue):
     Queue responsible for group solicitations waiting for analysis.
     """
 
-    def create_solicitation(self, user:settings.AUTH_USER_MODEL, claim_check, name=None):  # and claim_check
+    def create_solicitation(self, user:settings.AUTH_USER_MODEL, claim_check, name=None):
         """
         Create solicitation and adds to queue.
         """
@@ -46,49 +49,6 @@ class AnalysisQueue(RefundQueue):
             return solicitation
         logging.warning('Couldn\'t create solicitation because user as not passed')
         return None
-
-
-class PaymentQueue(RefundQueue):
-
-    """
-    Queue responsible for gathering solicitations in RefundBundle objects
-    while waiting for payment.
-    """
-
-    def add_solicitation(self, solicitation_id):
-        """
-        Add solicitation to refund bundle on queue.
-        """
-        solicitation = Solicitation.objects.filter(id=solicitation_id).first()
-        refund_bundle = self.__search_for_refund_bundle(solicitation)
-        refund_bundle.solicitations.add(solicitation)
-        refund_bundle.price += solicitation.price
-        refund_bundle.save()
-
-    def __search_for_refund_bundle(self, solicitation):
-        """
-        Searches for refund bundle, if no one was found create one
-        and return
-        """
-        refund_bundle = None
-        for refund in self.queue.all():
-            if solicitation.user == refund.user:
-                refund_bundle = refund
-
-        if refund_bundle is not None and refund_bundle.accepting_solicitations:
-            return refund_bundle
-
-        return self.__create_refund_bundle(solicitation.user)
-
-    def __create_refund_bundle(self, user) -> object:
-        """
-        Create refund bundle with user passed in parameter, append to queue and
-        returns it.
-        """
-        refund_bundle = RefundBundle(queue=self, user=user)
-        refund_bundle.save()
-        return refund_bundle
-
 
 
 class RefundBundle(models.Model):
@@ -108,12 +68,9 @@ class RefundBundle(models.Model):
         null=False,
         on_delete=models.CASCADE
     )
-    queue = models.ForeignKey(
-        PaymentQueue,
-        null=True, #TODO: rethink
-        on_delete=models.PROTECT,
-        related_name='queue'
-    )
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, default=1)
+    object_id = models.PositiveIntegerField(default=1)
+    queue = GenericForeignKey()
 
     def update_price(self):
         total_price = 0
@@ -127,7 +84,7 @@ class RefundBundle(models.Model):
                 for solicitation in self.solicitations.all():
                     solicitation.finalize()
                 self.state = 1
-                self.queue = None
+                self.queue = FinishedQueue.load()
                 self.save()
             except RuntimeError as e:
                 logging.error(str(e))
@@ -221,3 +178,47 @@ class ItemSolicitation(models.Model):
     solicitation = models.ForeignKey(
         Solicitation, related_name="items", on_delete=models.CASCADE
     )
+
+
+class PaymentQueue(RefundQueue):
+
+    """
+    Queue responsible for gathering solicitations in RefundBundle objects
+    while waiting for payment.
+    """
+
+    queue = GenericRelation(RefundBundle)
+
+    def add_solicitation(self, solicitation_id):
+        """
+        Add solicitation to refund bundle on queue.
+        """
+        solicitation = Solicitation.objects.filter(id=solicitation_id).first()
+        refund_bundle = self.__search_for_refund_bundle(solicitation)
+        refund_bundle.solicitations.add(solicitation)
+        refund_bundle.price += solicitation.price
+        refund_bundle.save()
+
+    def __search_for_refund_bundle(self, solicitation):
+        """
+        Searches for refund bundle, if no one was found create one
+        and return
+        """
+        refund_bundle = self.queue.filter(user=solicitation.user)#Mudei ISSO aqui
+        if refund_bundle and refund_bundle.accepting_solicitations:
+            return refund_bundle
+
+        return self.__create_refund_bundle(solicitation.user)
+
+    def __create_refund_bundle(self, user) -> object:
+        """
+        Create refund bundle with user passed in parameter, append to queue and
+        returns it.
+        """
+        refund_bundle = RefundBundle(queue=self, user=user)
+        refund_bundle.save()
+        return refund_bundle
+
+
+class FinishedQueue(RefundQueue):
+    queue = GenericRelation(RefundBundle)
