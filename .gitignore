@@ -4,3 +4,4 @@ refund_ws.*
 db.sqlite3
 media/*
 *.pyc
+*.env
