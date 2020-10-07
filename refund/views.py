@@ -5,7 +5,6 @@ from .models import AnalysisQueue, PaymentQueue, Solicitation, RefundBundle, Ite
 from .forms import CreateItemSolicitationFormSet, SolicitationForm, AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
 # Create your views here.
 
-
 def index(request):
     return HttpResponse('index')
 
@@ -88,7 +87,8 @@ def analyse_solicitation(request, solicitation_id):
             solicitation.authorize()
             return HttpResponse('Foi')
     else:
-        solicitation = get_object_or_404(Solicitation, id=solicitation_id, state=0)
+        solicitation = get_object_or_404(
+            Solicitation, id=solicitation_id, state=0)
         formset = AnalyseItemsSolicitationFormSet(
             queryset=ItemSolicitation.objects.filter(
                 solicitation=solicitation),
