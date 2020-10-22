@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from os.path import join
 from pathlib import Path
 import os
 import environ
@@ -35,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'agents.apps.AgentsConfig',
     'refund.apps.RefundConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,7 +61,7 @@ ROOT_URLCONF = 'sysreembolso.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# User MODEL
+AUTH_USER_MODEL = 'agents.User'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -126,3 +131,7 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#LOGIN & LOGOUT
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

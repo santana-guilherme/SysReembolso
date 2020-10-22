@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action='/agents/register' method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button> Enviar </button>
+    </form>
+{% endblock content %}
