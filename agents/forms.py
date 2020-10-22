@@ -1,6 +1,6 @@
 from django.forms import ModelForm, PasswordInput, CharField, ModelChoiceField
-from .models import User
 from django.contrib.auth.models import Group
+from .models import User
 
 class UserRegistrationForm(ModelForm):
 
