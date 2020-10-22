@@ -8,8 +8,10 @@
     <title>Reembolso</title>
   </head>
   <body>
+
     <form action='/refund/create_solicitation' enctype="multipart/form-data" method='post'>
       {% csrf_token %}
+      
       {{form.as_p}}
       <table>
         {{formset}}
@@ -17,10 +19,12 @@
       <button id='add_item' type="button">+</button>
       <input type='submit' value='Enviar'/>
     </form>
+
     <div style='display:none' id ='empty_form'>
       <table>
         {{ formset.empty_form }}
       </table>
     </div>
+
   </body>
 </html>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from .models import AnalysisQueue, PaymentQueue, Solicitation, RefundBundle, ItemSolicitation
 from .forms import CreateItemSolicitationFormSet, SolicitationForm, AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
@@ -8,8 +9,9 @@ from .forms import CreateItemSolicitationFormSet, SolicitationForm, AnalyseItems
 def index(request):
     return HttpResponse('index')
 
-
+@login_required(login_url='/agents/login')
 def analysis_queue(request):
+    print("Is user authenticated", request.user.is_authenticated )
     solicitations = AnalysisQueue.load().queue.all()
     return render(
         request,
@@ -100,6 +102,8 @@ def analyse_solicitation(request, solicitation_id):
         {'solicitation': solicitation, 'formset': formset}
     )
 
+def update_solicitation(request, solicitation_id):
+    ...
 
 def pay_refundbundle(request, refund_bundle_id):
     if request.method == 'POST':

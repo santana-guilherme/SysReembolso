@@ -58,7 +58,7 @@ class RefundBundle(models.Model):
     """
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
-    account_number = models.IntegerField(null=True) #TODO: null false
+    account_number = models.IntegerField(null=True) #TODO: null false, vem de user
     pix = models.CharField(null=True, max_length=20)
     refund_memo = models.ImageField()
     accepting_solicitations = models.BooleanField(default=True)
@@ -142,13 +142,20 @@ class Solicitation(models.Model):
         return True
 
     def authorize(self):
+        self.update_price()
+
         if self.all_itens_resolved():
-            self.state = 1
-            self.queue = None
-            self.update_price()
-            payment_queue = PaymentQueue.load()
-            # i think is better for security
-            payment_queue.add_solicitation(self.id)
+            if self.price > 0:
+                self.state = 1
+                self.queue = None
+                payment_queue = PaymentQueue.load()
+                # i think is better for security
+                payment_queue.add_solicitation(self.id)
+            else:
+                self.state = 2
+                self.queue = None
+            self.save()
+
 
     def finalize(self):
         if self.all_itens_resolved() and self.state == 1:
