@@ -1,4 +1,4 @@
-{% extends "refund/base.html" %}
+{% extends "base.html" %}
 {% block content %}
   <form action='/refund/pay_refund/' enctype="multipart/form-data" method='post'>
   {% csrf_token %}
