@@ -1,0 +1,11 @@
+{% include "base.html" %}
+{% block content %}
+    <form action='/refund/update_solicitation/' enctype="multipart/form-data" method='post'>
+        {% csrf_token %}
+        {{ form }}
+         <table>
+            {{formset}}
+        </table>
+        <button> Enviar </button>
+    </form>
+{% endblock content %}

@@ -1,3 +1,4 @@
+from django.contrib.contenttypes import fields
 from django.forms import ModelForm, modelformset_factory, modelform_factory
 from django import forms
 from .models import Solicitation, ItemSolicitation, RefundBundle
@@ -10,7 +11,7 @@ class SolicitationForm(ModelForm):
 
 
 CreateItemSolicitationFormSet = modelformset_factory(
-    ItemSolicitation, fields=('name', 'price'))
+    ItemSolicitation, fields=('name', 'price'), extra=0)
 
 
 class AnalyseItemsSolicitationForm(ModelForm):

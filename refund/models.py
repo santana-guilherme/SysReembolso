@@ -85,6 +85,7 @@ class RefundBundle(models.Model):
                     solicitation.finalize()
                 self.state = 1
                 self.queue = FinishedQueue.load()
+                self.accepting_solicitations = False
                 self.save()
             except RuntimeError as e:
                 logging.error(str(e))
@@ -149,8 +150,7 @@ class Solicitation(models.Model):
                 self.state = 1
                 self.queue = None
                 payment_queue = PaymentQueue.load()
-                # i think is better for security
-                payment_queue.add_solicitation(self.id)
+                payment_queue.add_solicitation(self)
             else:
                 self.state = 2
                 self.queue = None
@@ -196,11 +196,10 @@ class PaymentQueue(RefundQueue):
 
     queue = GenericRelation(RefundBundle)
 
-    def add_solicitation(self, solicitation_id):
+    def add_solicitation(self, solicitation: Solicitation):
         """
         Add solicitation to refund bundle on queue.
         """
-        solicitation = Solicitation.objects.filter(id=solicitation_id).first()
         refund_bundle = self.__search_for_refund_bundle(solicitation)
         refund_bundle.solicitations.add(solicitation)
         refund_bundle.price += solicitation.price
@@ -211,7 +210,7 @@ class PaymentQueue(RefundQueue):
         Searches for refund bundle, if no one was found create one
         and return
         """
-        refund_bundle = self.queue.filter(user=solicitation.user)#Mudei ISSO aqui
+        refund_bundle = self.queue.filter(user=solicitation.user).first()#Mudei ISSO aqui
         if refund_bundle and refund_bundle.accepting_solicitations:
             return refund_bundle
 

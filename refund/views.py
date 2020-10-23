@@ -1,17 +1,21 @@
-from django.shortcuts import render, get_object_or_404
+from .forms import CreateItemSolicitationFormSet, SolicitationForm, \
+    AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
+from .models import AnalysisQueue, FinishedQueue, PaymentQueue, \
+    Solicitation, RefundBundle, ItemSolicitation
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from .models import AnalysisQueue, PaymentQueue, Solicitation, RefundBundle, ItemSolicitation
-from .forms import CreateItemSolicitationFormSet, SolicitationForm, AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
 # Create your views here.
+
 
 def index(request):
     return HttpResponse('index')
 
+
 @login_required(login_url='/agents/login')
 def analysis_queue(request):
-    print("Is user authenticated", request.user.is_authenticated )
+    print("Is user authenticated", request.user.is_authenticated)
     solicitations = AnalysisQueue.load().queue.all()
     return render(
         request,
@@ -29,6 +33,16 @@ def payment_queue(request):
     )
 
 
+@login_required(login_url='/agents/login')
+def finished_queue(request):
+    finished_refunds = FinishedQueue.load().queue.all()
+    return render(
+        request,
+        'refund/payment_queue.html',
+        {'refund_bundle_list': finished_refunds}
+    )
+
+
 def solicitation_detail(request, solicitation_id):
     solicitation = Solicitation.objects.filter(id=solicitation_id).first()
     return render(
@@ -40,6 +54,7 @@ def solicitation_detail(request, solicitation_id):
 
 def refund_bundle_detail(request, refund_bundle_id):
     refund_bundle = RefundBundle.objects.filter(id=refund_bundle_id).first()
+    print(refund_bundle.solicitations.all())
     return render(
         request,
         'refund/refund_bundle_detail.html',
@@ -52,7 +67,7 @@ def create_solicitation(request):
         form = SolicitationForm(request.POST, request.FILES)
         formset = CreateItemSolicitationFormSet(request.POST, prefix='items')
         if form.is_valid() and formset.is_valid():
-            user = get_user_model().objects.first()
+            user = request.user
             analysis_queue_obj = AnalysisQueue.load()
             new_solicitation = analysis_queue_obj.create_solicitation(
                 user,
@@ -75,7 +90,7 @@ def create_solicitation(request):
     return render(
         request,
         'refund/create_solicitation.html',
-        {'form': form, 'formset': formset}
+        {'form': form, 'formset': formset, 'action_url': '/refund/create_solicitation'}
     )
 
 
@@ -102,8 +117,29 @@ def analyse_solicitation(request, solicitation_id):
         {'solicitation': solicitation, 'formset': formset}
     )
 
+
 def update_solicitation(request, solicitation_id):
-    ...
+    solicitation = get_object_or_404(Solicitation, id=solicitation_id)
+    if request.method == 'POST':
+        form = SolicitationForm(request.POST, request.FILES, instance=solicitation)
+        formset = CreateItemSolicitationFormSet(request.POST, prefix='items')
+        if form.is_valid():
+            solicitation = form.save()
+            
+            formset.save()
+            return redirect(f'/refund/solicitation_detail/{solicitation.id}')
+    else:
+        form = SolicitationForm(instance=solicitation)
+        formset = CreateItemSolicitationFormSet(prefix='items', \
+            queryset=ItemSolicitation.objects.filter(solicitation=solicitation))
+    return render(
+        request,
+        'refund/create_solicitation.html',
+        { 'form': form, 
+        'formset': formset, 
+        'action_url': f'/refund/update_solicitation/{solicitation_id}' }
+    )
+
 
 def pay_refundbundle(request, refund_bundle_id):
     if request.method == 'POST':
@@ -121,3 +157,8 @@ def pay_refundbundle(request, refund_bundle_id):
         'refund/pay_refund.html',
         {'form': form}
     )
+
+
+def teste_logged_user(request):
+    print(request.user)
+    return HttpResponse(request.user.username)
