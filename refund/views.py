@@ -145,8 +145,8 @@ def update_solicitation(request, solicitation_id):
     return render(
         request,
         'refund/create_solicitation.html',
-        { 'form': form, 
-        'formset': formset, 
+        { 'form': form,
+        'formset': formset,
         'action_url': f'/refund/update_solicitation/{solicitation_id}' }
     )
 
