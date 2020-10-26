@@ -14,7 +14,7 @@
       <tbody>
         {% for refund_bundle in refund_bundle_list %}
         <tr>
-          <td> <a href="/refund/refund_bundle_detail/{{refund_bundle.id}}">{{ refund_bundle.user.first_name |title }}</a> </td>
+          <td> <a href="{% url 'refund:refund_bundle_detail' refund_bundle.id %}">{{ refund_bundle.user.first_name |title }}</a> </td>
           <td> R$ {{ refund_bundle.price }}</td>
           <td> {{ refund_bundle.get_state }} </td>
           <td> {{ refund_bundle.accepting_solicitations }} </td>
