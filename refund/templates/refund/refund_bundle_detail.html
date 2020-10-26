@@ -18,7 +18,14 @@
     <h4>Solicitações</h4>
     <ul>
         {% for solicitation in refund_bundle.solicitations.all %}
-        <li> <a href='/refund/solicitation_detail/{{solicitation.id}}'> {{ solicitation.name | title}} </a> -- R$ {{solicitation.price}} </li>
+            <li>
+                <a href="
+                    {% if solicitation_link %}
+                        {% url 'refund:solicitation_detail' solicitation.id %}
+                    {% endif %}">
+                    {{ solicitation.name | title}}
+                </a> -- R$ {{solicitation.price}}
+            </li>
         {% endfor %}
     </ul>
 {% endblock content %}

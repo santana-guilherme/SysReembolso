@@ -60,11 +60,16 @@ def solicitation_detail(request, solicitation_id):
 
 def refund_bundle_detail(request, refund_bundle_id):
     refund_bundle = RefundBundle.objects.filter(id=refund_bundle_id).first()
-    print(refund_bundle.solicitations.all())
+    solicitation_link = True
+    if is_member(request.user, 'Treasurer'):
+        solicitation_link = False
     return render(
         request,
         'refund/refund_bundle_detail.html',
-        {'refund_bundle': refund_bundle}
+        {
+            'refund_bundle': refund_bundle,
+            'solicitation_link': solicitation_link
+        }
     )
 
 @permission_required('refund.add_solicitation', login_url='/agents/login')

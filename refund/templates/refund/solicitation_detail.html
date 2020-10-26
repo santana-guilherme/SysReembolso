@@ -27,5 +27,7 @@
       <li> {{ item.name | title}} -- R$ {{item.price}} -- {{item.accepted}}</li>
     {% endfor %}
   </ul>
-  <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>Editar</button></a>
+  {% if perms.refund.change_solicitation %}
+    <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>Editar</button></a>
+  {% endif %}
 {% endblock content %}
