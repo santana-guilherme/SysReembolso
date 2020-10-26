@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Rembolso</title>
-  </head>
-
-  <body>
+{% extends "base.html" %}
+{% block content %}
     <h2>Solicitações em análise</h2>
     {%if refund_bundle_list %}
     <table>
@@ -20,7 +14,7 @@
       <tbody>
         {% for refund_bundle in refund_bundle_list %}
         <tr>
-          <td> <a href="/refund/refund_bundle_detail/{{refund_bundle.id}}">{{ refund_bundle.user.username |title }}</a> </td>
+          <td> <a href="/refund/refund_bundle_detail/{{refund_bundle.id}}">{{ refund_bundle.user.first_name |title }}</a> </td>
           <td> R$ {{ refund_bundle.price }}</td>
           <td> {{ refund_bundle.get_state }} </td>
           <td> {{ refund_bundle.accepting_solicitations }} </td>
@@ -31,6 +25,4 @@
     {% else %}
       <p>Não há pedidos de reembolsos em análise</p>
     {% endif %}
-  </body>
-
-</html>
+{% endblock content %}
