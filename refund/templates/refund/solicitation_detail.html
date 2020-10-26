@@ -27,4 +27,5 @@
       <li> {{ item.name | title}} -- R$ {{item.price}} -- {{item.accepted}}</li>
     {% endfor %}
   </ul>
+  <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>Editar</button></a>
 {% endblock content %}

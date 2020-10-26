@@ -1,5 +1,5 @@
 from django.db import connections
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from .forms import UserRegistrationForm
@@ -16,6 +16,7 @@ def registerUser(request):
             user.save()
             group.user_set.add(user)
             group.save()
+            return redirect('/agents/login')
     else:
         form = UserRegistrationForm()
     return render(

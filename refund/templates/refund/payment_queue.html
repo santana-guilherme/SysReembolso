@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Solicitações em análise</h2>
+    <h2>Pedidos de reembolso aguardando pagamento</h2>
     {%if refund_bundle_list %}
     <table>
       <thead>
@@ -23,6 +23,6 @@
       </tbody>
     </table>
     {% else %}
-      <p>Não há pedidos de reembolsos em análise</p>
+      <p>Não há pedidos de reembolsos</p>
     {% endif %}
 {% endblock content %}

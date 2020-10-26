@@ -11,7 +11,7 @@ class SolicitationForm(ModelForm):
 
 
 CreateItemSolicitationFormSet = modelformset_factory(
-    ItemSolicitation, fields=('name', 'price'), extra=0)
+    ItemSolicitation, fields=('name', 'price'), extra=1)
 
 
 class AnalyseItemsSolicitationForm(ModelForm):

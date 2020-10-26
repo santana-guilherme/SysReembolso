@@ -1,33 +1,35 @@
+from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from .forms import CreateItemSolicitationFormSet, SolicitationForm, \
     AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
 from .models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
-from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
+from .utils import is_analyst, is_member
 # Create your views here.
 
 
 def index(request):
-    return render(
-        request,
-        'base.html',
-        {}
-    )
+    return render( request, 'base.html', {} )
 
 
 @login_required(login_url='/agents/login')
 def analysis_queue(request):
-    print("Is user authenticated", request.user.is_authenticated)
     solicitations = AnalysisQueue.load().queue.all()
+    solicitation_page = 'refund:solicitation_detail'
+    if is_member(request.user, 'Analyst'):
+        solicitation_page = 'refund:analyse_solicitation'
+
     return render(
         request,
         'refund/analysis_queue.html',
-        {'solicitations_list': solicitations}
+        {
+            'solicitations_list': solicitations,
+            'solicitation_page': solicitation_page
+        }
     )
 
-
+@permission_required('refund.view_paymentqueue', login_url='/agents/login')
 def payment_queue(request):
     refund_bundle_list = PaymentQueue.load().queue.all()
     return render(
@@ -37,7 +39,7 @@ def payment_queue(request):
     )
 
 
-@login_required(login_url='/agents/login')
+@permission_required('refund.view_finishedqueue', login_url='/agents/login')
 def finished_queue(request):
     finished_refunds = FinishedQueue.load().queue.all()
     return render(
@@ -65,7 +67,7 @@ def refund_bundle_detail(request, refund_bundle_id):
         {'refund_bundle': refund_bundle}
     )
 
-
+@permission_required('refund.add_solicitation', login_url='/agents/login')
 def create_solicitation(request):
     if request.method == 'POST':
         form = SolicitationForm(request.POST, request.FILES)
@@ -84,7 +86,7 @@ def create_solicitation(request):
             for item in items:
                 item.solicitation = new_solicitation
                 item.save()
-            return HttpResponse('Valeu')
+            return redirect('/')
     else:
         formset = CreateItemSolicitationFormSet(
             prefix='items', queryset=ItemSolicitation.objects.none()
@@ -97,7 +99,8 @@ def create_solicitation(request):
         {'form': form, 'formset': formset, 'action_url': '/refund/create_solicitation'}
     )
 
-
+@user_passes_test(is_analyst, login_url='/agents/login')
+@permission_required('refund.change_solicitation', login_url='/agents/login')
 def analyse_solicitation(request, solicitation_id):
     solicitation = get_object_or_404(
             Solicitation, id=solicitation_id, state=0)
@@ -106,7 +109,7 @@ def analyse_solicitation(request, solicitation_id):
         if formset.is_valid():
             formset.save()
             solicitation.authorize()
-            return HttpResponse('Foi')
+            return redirect('/')
     else:
         formset = AnalyseItemsSolicitationFormSet(
             queryset=ItemSolicitation.objects.filter(
@@ -119,7 +122,7 @@ def analyse_solicitation(request, solicitation_id):
         {'solicitation': solicitation, 'formset': formset}
     )
 
-
+@permission_required('refund.change_solicitation', login_url='agents/login')
 def update_solicitation(request, solicitation_id):
     solicitation = get_object_or_404(Solicitation, id=solicitation_id)
     if solicitation.state > 0:
@@ -150,7 +153,7 @@ def update_solicitation(request, solicitation_id):
         'action_url': f'/refund/update_solicitation/{solicitation_id}' }
     )
 
-
+@permission_required('change_refundbundle', login_url='/agents/login')
 def pay_refundbundle(request, refund_bundle_id):
     if request.method == 'POST':
         form = UpdateRefundBundleForm(request.POST, request.FILES)

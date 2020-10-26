@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
         permissions = ['view_solicitation', 'change_solicitation',
             'delete_solicitation', 'view_paymentqueue', 'view_refundbundle',
-            'add_solicitation', 'view_analysisqueue']
+            'add_solicitation', 'view_analysisqueue', 'view_finishedqueue']
         for permission in permissions:
             perm = Permission.objects.get(codename=permission)
             employee.permissions.add(perm)

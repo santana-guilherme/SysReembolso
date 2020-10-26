@@ -1,8 +1,8 @@
 {
 	"folders": [
-		{
-			"path": "."
-		}
+    {
+      "path": "."
+    }
   ],
   "settings": {
     "python.linting.pylintArgs": [
