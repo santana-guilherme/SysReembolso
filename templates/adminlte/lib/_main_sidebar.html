@@ -1,0 +1,19 @@
+{% extends 'adminlte/lib/_main_sidebar.html' %}
+
+{% block nav_links %}
+    <li>
+        <a href="{% url 'refund:analysis_queue' %}">
+            <i class="fa fa-dashboard"></i> <span>Analysis</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'refund:payment_queue' %}">
+            <i class="fa fa-user"></i> <span>Payments</span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'refund:create_solicitation' %}">
+            <i class="fa fa-user"></i> <span>Create Solicitation</span>
+        </a>
+    </li>
+{% endblock nav_links %}

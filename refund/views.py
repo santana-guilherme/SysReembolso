@@ -10,7 +10,11 @@ from django.contrib.auth import get_user_model
 
 
 def index(request):
-    return HttpResponse('index')
+    return render(
+        request,
+        'base.html',
+        {}
+    )
 
 
 @login_required(login_url='/agents/login')
@@ -120,12 +124,15 @@ def analyse_solicitation(request, solicitation_id):
 
 def update_solicitation(request, solicitation_id):
     solicitation = get_object_or_404(Solicitation, id=solicitation_id)
+    if solicitation.state > 0:
+        return HttpResponse('Solicitação já foi aprovada/finalizada. \
+            Você não pode atualizar essa solicitação')
     if request.method == 'POST':
         form = SolicitationForm(request.POST, request.FILES, instance=solicitation)
         formset = CreateItemSolicitationFormSet(request.POST, prefix='items')
         if form.is_valid():
             solicitation = form.save()
-            
+
             formset.save()
             return redirect(f'/refund/solicitation_detail/{solicitation.id}')
     else:

@@ -1,10 +1,13 @@
 from django.urls import path, re_path
 from . import views
 
+
+app_name = 'refund'
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('analysis', views.analysis_queue, name='analysis_queue'),
-    path('payment', views.payment_queue, name='payment_queue'),
+    path('payments', views.payment_queue, name='payment_queue'),
     path('finished', views.finished_queue, name='finished_queue'),
     path('user', views.teste_logged_user, name='logged_user'),
     path('create_solicitation', views.create_solicitation,
@@ -14,7 +17,6 @@ urlpatterns = [
 
     re_path(r'^update_solicitation/(?P<solicitation_id>\d*)',
          views.update_solicitation, name='update_solicitation'),
-         
     path('analyse_solicitation/<int:solicitation_id>',
          views.analyse_solicitation, name='analyse_solicitation'),
     path(
