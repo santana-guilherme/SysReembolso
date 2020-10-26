@@ -99,17 +99,15 @@ def create_solicitation(request):
 
 
 def analyse_solicitation(request, solicitation_id):
+    solicitation = get_object_or_404(
+            Solicitation, id=solicitation_id, state=0)
     if request.method == 'POST':
         formset = AnalyseItemsSolicitationFormSet(request.POST)
-        solicitation = get_object_or_404(Solicitation, id=solicitation_id)
         if formset.is_valid():
-            for item in formset:
-                item.save()
+            formset.save()
             solicitation.authorize()
             return HttpResponse('Foi')
     else:
-        solicitation = get_object_or_404(
-            Solicitation, id=solicitation_id, state=0)
         formset = AnalyseItemsSolicitationFormSet(
             queryset=ItemSolicitation.objects.filter(
                 solicitation=solicitation),
@@ -133,12 +131,17 @@ def update_solicitation(request, solicitation_id):
         if form.is_valid():
             solicitation = form.save()
 
-            formset.save()
+            items = formset.save(commit=False)
+            for item in items:
+                item.solicitation = solicitation
+                item.save()
             return redirect(f'/refund/solicitation_detail/{solicitation.id}')
     else:
         form = SolicitationForm(instance=solicitation)
         formset = CreateItemSolicitationFormSet(prefix='items', \
-            queryset=ItemSolicitation.objects.filter(solicitation=solicitation))
+            queryset=ItemSolicitation.objects.filter(
+                solicitation=solicitation, accepted=None
+            ))
     return render(
         request,
         'refund/create_solicitation.html',
