@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+    "python.linting.pylintArgs": [
+      "--load-plugins",
+      "pylint_django",
+      "--disable=C0111"
+    ],
+    "editor.tabSize": 4,
+    "python.pythonPath": "env/bin/python"
+  }
+}
