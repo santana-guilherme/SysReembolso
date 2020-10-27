@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
-from .forms import CreateItemSolicitationFormSet, SolicitationForm, \
+from .forms import get_item_solicitation_formset, SolicitationForm, \
     AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
 from .models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
@@ -76,7 +76,8 @@ def refund_bundle_detail(request, refund_bundle_id):
 def create_solicitation(request):
     if request.method == 'POST':
         form = SolicitationForm(request.POST, request.FILES)
-        formset = CreateItemSolicitationFormSet(request.POST, prefix='items')
+        ItemSolicitationFormset = get_item_solicitation_formset()
+        formset = ItemSolicitationFormset(request.POST, prefix='items')
         if form.is_valid() and formset.is_valid():
             user = request.user
             analysis_queue_obj = AnalysisQueue.load()
@@ -93,7 +94,8 @@ def create_solicitation(request):
                 item.save()
             return redirect('/')
     else:
-        formset = CreateItemSolicitationFormSet(
+        ItemSolicitationFormset = get_item_solicitation_formset(extra=1)
+        formset = ItemSolicitationFormset(
             prefix='items', queryset=ItemSolicitation.objects.none()
         )
         form = SolicitationForm()
@@ -135,7 +137,8 @@ def update_solicitation(request, solicitation_id):
             Você não pode atualizar essa solicitação')
     if request.method == 'POST':
         form = SolicitationForm(request.POST, request.FILES, instance=solicitation)
-        formset = CreateItemSolicitationFormSet(request.POST, prefix='items')
+        ItemSolicitationFormset = get_item_solicitation_formset()
+        formset = ItemSolicitationFormset(request.POST, prefix='items')
         if form.is_valid():
             solicitation = form.save()
 
@@ -146,7 +149,8 @@ def update_solicitation(request, solicitation_id):
             return redirect(f'/refund/solicitation_detail/{solicitation.id}')
     else:
         form = SolicitationForm(instance=solicitation)
-        formset = CreateItemSolicitationFormSet(prefix='items', \
+        ItemSolicitationFormset = get_item_solicitation_formset(extra=0, can_delete=True)
+        formset = ItemSolicitationFormset(prefix='items', \
             queryset=ItemSolicitation.objects.filter(
                 solicitation=solicitation, accepted=None
             ))
