@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 14:54-0300\n"
+"POT-Creation-Date: 2020-10-27 15:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,81 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: refund/templates/refund/analysis_queue.html:9
+#: templates/refund/analysis_queue.html:9 templates/refund/payment_queue.html:9
+#: templates/refund/refund_bundle_detail.html:8
+#: templates/refund/solicitation_detail.html:7
 msgid "Name"
 msgstr "Nome"
 
-#: refund/templates/refund/analysis_queue.html:10
+#: templates/refund/analysis_queue.html:10
+#: templates/refund/payment_queue.html:10
+#: templates/refund/refund_bundle_detail.html:9
+#: templates/refund/solicitation_detail.html:8
 msgid "Price"
 msgstr "Preço"
 
-#: refund/templates/refund/analysis_queue.html:11
+#: templates/refund/analysis_queue.html:11
 msgid "Creation Date"
 msgstr "Data de criação"
 
-#: refund/templates/refund/analysis_queue.html:12
+#: templates/refund/analysis_queue.html:12
+#: templates/refund/solicitation_detail.html:10
 msgid "Last modification"
 msgstr "Última modificação"
 
-#: refund/templates/refund/analysis_queue.html:13
+#: templates/refund/analysis_queue.html:13
+#: templates/refund/payment_queue.html:11
 msgid "State"
 msgstr "Estado"
 
-#: refund/templates/refund/analysis_queue.html:29
+#: templates/refund/analysis_queue.html:29
 msgid "There are not solicitations in analysis"
 msgstr "Não há solicitações em análise"
 
-#: refund/templates/refund/create_solicitation.html:22
-#: refund/templates/refund/pay_refund.html:7
+#: templates/refund/create_solicitation.html:22
+#: templates/refund/pay_refund.html:7
+#: templates/refund/update_solicitation.html:10
 msgid "Send"
 msgstr "Enviar"
+
+#: templates/refund/payment_queue.html:4
+msgid "Refund requests waiting payment"
+msgstr "Pedidos aguardando pagamento"
+
+#: templates/refund/payment_queue.html:12
+msgid "Accept new solicitations"
+msgstr "Aceita novas solicitações"
+
+#: templates/refund/payment_queue.html:27
+msgid "There are no payments waiting"
+msgstr "Não há pagamentos a serem realizados"
+
+#: templates/refund/refund_bundle_detail.html:4
+msgid "Refund bundle detail"
+msgstr "Detalhes do pagamento"
+
+#: templates/refund/refund_bundle_detail.html:19
+msgid "Solicitations"
+msgstr "Solicitações"
+
+#: templates/refund/solicitation_detail.html:3
+msgid "Solicitation detail"
+msgstr "Detalhes da solicitação"
+
+#: templates/refund/solicitation_detail.html:9
+#, fuzzy
+#| msgid "Creation Date"
+msgid "Creation date"
+msgstr "Data de criação"
+
+#: templates/refund/solicitation_detail.html:11
+msgid "Claim check"
+msgstr "Nota fiscal"
+
+#: templates/refund/solicitation_detail.html:24
+msgid "Solicitation items"
+msgstr "Items da solicitação"
+
+#: templates/refund/solicitation_detail.html:31
+msgid "Edit"
+msgstr "Editar"
