@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-    <h2>Pedidos de reembolso aguardando pagamento</h2>
+    <h2>{% trans 'Refund requests waiting payment'%}</h2>
     {%if refund_bundle_list %}
     <table>
       <thead>
         <tr>
-          <td>Nome</td>
-          <td>Preço</td>
-          <td>Estado</td>
-          <td>Aceita novas solicitações</td>
+          <td>{% trans 'Name' %}</td>
+          <td>{% trans 'Price' %}</td>
+          <td>{% trans 'State' %}</td>
+          <td>{% trans 'Accept new solicitations' %}</td>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +24,6 @@
       </tbody>
     </table>
     {% else %}
-      <p>Não há pedidos de reembolsos</p>
+      <p>{% trans 'There are no payments waiting' %}</p>
     {% endif %}
 {% endblock content %}

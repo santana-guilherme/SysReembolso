@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-    <h2>Detalhe do pedido</h2>
+    <h2>{% trans 'Refund bundle detail' %}</h2>
     <table>
         <thead>
         <tr>
-            <td>Nome</td>
-            <td>Preço</td>
+            <td>{% trans 'Name' %}</td>
+            <td>{% trans 'Price' %}</td>
         </tr>
         </thead>
         <tbody>
@@ -15,7 +16,7 @@
         </tr>
         </tbody>
     </table>
-    <h4>Solicitações</h4>
+    <h4>{% trans 'Solicitations' %}</h4>
     <ul>
         {% for solicitation in refund_bundle.solicitations.all %}
             <li>

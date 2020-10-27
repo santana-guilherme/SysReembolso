@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
     <form action='/refund/update_solicitation/' enctype="multipart/form-data" method='post'>
         {% csrf_token %}
@@ -6,6 +7,6 @@
          <table>
             {{formset}}
         </table>
-        <button> Enviar </button>
+        <button> {% trans 'Send' %} </button>
     </form>
 {% endblock content %}

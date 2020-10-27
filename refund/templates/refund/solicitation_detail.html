@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-  <h2>Detalhe solicitação</h2>
+  <h2>{% trans 'Solicitation detail' %}</h2>
   <table>
     <thead>
       <tr>
-        <td>Nome</td>
-        <td>Preço</td>
-        <td>Data criação</td>
-        <td>Última modificação</td>
-        <td>Nota fiscal</td>
+        <td>{% trans 'Name' %}</td>
+        <td>{% trans 'Price' %}</td>
+        <td>{% trans 'Creation date' %}</td>
+        <td>{% trans 'Last modification' %}</td>
+        <td>{% trans 'Claim check' %} </td>
       </tr>
     </thead>
     <tbody>
@@ -21,13 +22,13 @@
       </tr>
     </tbody>
   </table>
-  <h4>Solicitation items</h4>
+  <h4>{% trans 'Solicitation items' %}</h4>
   <ul>
     {% for item in solicitation.items.all %}
       <li> {{ item.name | title}} -- R$ {{item.price}} -- {{item.accepted}}</li>
     {% endfor %}
   </ul>
   {% if perms.refund.change_solicitation and solicitation.state == 0 %}
-    <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>Editar</button></a>
+    <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>{% trans 'Edit' %}</button></a>
   {% endif %}
 {% endblock content %}
