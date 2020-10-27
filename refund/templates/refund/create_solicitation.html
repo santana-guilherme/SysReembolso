@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block extra_head %}
 {% load static %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -19,7 +19,7 @@
 
       <button id='add_item' type="button">+</button>
       <button id='remove_last' type="button">-</button>
-      <input type='submit' value='Enviar'/>
+      <button type='submit'>{% translate 'Send' %}</button>
     </form>
 
     <div style='display:none' id ='empty_form'>
