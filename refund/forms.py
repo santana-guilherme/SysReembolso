@@ -10,8 +10,11 @@ class SolicitationForm(ModelForm):
         fields = ['name', 'claim_check']
 
 
-CreateItemSolicitationFormSet = modelformset_factory(
-    ItemSolicitation, fields=('name', 'price'), extra=1)
+def get_item_solicitation_formset(extra: int = 0, can_delete:bool = False):
+    return modelformset_factory(
+        ItemSolicitation, fields=('name', 'price'),
+        extra=extra, can_delete=can_delete
+    )
 
 
 class AnalyseItemsSolicitationForm(ModelForm):
