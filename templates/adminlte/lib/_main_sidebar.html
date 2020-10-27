@@ -1,44 +1,44 @@
 {% extends 'adminlte/lib/_main_sidebar.html' %}
-
+{% load i18n %}
 {% block nav_links %}
     {% if user.is_authenticated %}
         {% if perms.refund.view_analysisqueue %}
             <li>
                 <a href="{% url 'refund:analysis_queue' %}">
-                    <i class="fa fa-bars"></i> <span>Analysis</span>
+                    <i class="fa fa-bars"></i> <span>{% trans "Analysis" %}</span>
                 </a>
             </li>
         {% endif %}
         {% if perms.refund.view_paymentqueue %}
             <li>
                 <a href="{% url 'refund:payment_queue' %}">
-                    <i class="fa fa-usd"></i> <span>Payments</span>
+                    <i class="fa fa-usd"></i> <span>{% trans 'Payments' %}</span>
                 </a>
             </li>
         {% endif %}
         {% if perms.refund.view_finishedqueue %}
             <li>
                 <a href="{% url 'refund:finished_queue' %}">
-                    <i class="fa fa-history"></i> <span>Finished</span>
+                    <i class="fa fa-history"></i> <span>{% trans 'Finished' %}</span>
                 </a>
             </li>
         {% endif %}
         {% if  perms.refund.add_solicitation %}
             <li>
                 <a href="{% url 'refund:create_solicitation' %}">
-                    <i class="fa fa-pencil-square-o"></i> <span>Create Solicitation</span>
+                    <i class="fa fa-pencil-square-o"></i> <span>{% trans 'Create Solicitation' %}</span>
                 </a>
             </li>
         {% endif %}
     {% else %}
         <li>
             <a href="{% url 'agents:login' %}">
-                <i class="fa fa-sign-in "></i> <span>Login</span>
+                <i class="fa fa-sign-in "></i> <span>{% trans 'Login'%}</span>
             </a>
         </li>
         <li>
             <a href="{% url 'agents:register' %}">
-                <i class="fa fa-user"></i> <span>Register</span>
+                <i class="fa fa-user"></i> <span>{% trans 'Register'%}</span>
             </a>
         </li>
     {% endif %}

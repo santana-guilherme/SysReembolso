@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
     <h2>Solicitações em análise</h2>
     {%if solicitations_list %}
     <table>
         <thead>
         <tr>
-            <td>Nome</td>
-            <td>Preço</td>
-            <td>Data criação</td>
-            <td>Última modificação</td>
-            <td>Estado</td>
+            <td>{% translate 'Name' %}</td>
+            <td>{% translate 'Price' %}</td>
+            <td>{% translate 'Creation Date' %}</td>
+            <td>{% translate 'Last modification' %}</td>
+            <td>{% translate 'State' %}</td>
         </tr>
         </thead>
         <tbody>
@@ -25,6 +26,6 @@
         </tbody>
     </table>
     {% else %}
-        <p>Não há pedidos de reembolsos em análise</p>
+        <p>{% translate 'There are not solicitations in analysis' %}</p>
     {% endif %}
 {% endblock content %}

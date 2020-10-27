@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
   <form action='/refund/pay_refund/' enctype="multipart/form-data" method='post'>
   {% csrf_token %}
     {{form}}
-    <button>Enviar</button>
+    <button>{% translate 'Send' %}</button>
   </form>
 {% endblock content %}
