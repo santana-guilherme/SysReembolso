@@ -154,5 +154,3 @@ LOCALE_PATHS = (
 LANGUAGES = [
     ('pt-br', _('Portuguese')),
 ]
-
-USE_I18N = True

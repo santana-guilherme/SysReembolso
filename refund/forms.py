@@ -1,19 +1,28 @@
-from django.contrib.contenttypes import fields
-from django.forms import ModelForm, modelformset_factory, modelform_factory
+from django.forms import ModelForm, modelformset_factory
 from django import forms
+from django.utils.translation import gettext as _
 from .models import Solicitation, ItemSolicitation, RefundBundle
+
 
 
 class SolicitationForm(ModelForm):
     class Meta:
         model = Solicitation
         fields = ['name', 'claim_check']
+        labels = {
+            'name': _("Name"),
+            'claim_check': _("Claim check")
+        }
 
 
 def get_item_solicitation_formset(extra: int = 0, can_delete:bool = False):
     return modelformset_factory(
         ItemSolicitation, fields=('name', 'price'),
-        extra=extra, can_delete=can_delete
+        extra=extra, can_delete=can_delete,
+        labels={
+            'name': _("Name"),
+            'price': _("Price")
+        }
     )
 
 
@@ -21,7 +30,11 @@ class AnalyseItemsSolicitationForm(ModelForm):
     class Meta:
         model = ItemSolicitation
         fields = ['name', 'price','accepted']
-
+        labels = {
+            'name': _("Name"),
+            'price': _("Price"),
+            'accepted': _("Accepted")
+        }
     name = forms.CharField(disabled=True)
     price = forms.FloatField(disabled=True)
 
@@ -34,6 +47,10 @@ class UpdateRefundBundleModelForm(ModelForm):
     class Meta:
         model = RefundBundle
         fields = ['price', 'account_number', 'pix', 'refund_memo']
+        labels = {
+            'price': _('Price'),
+            'refund_memo': _('Refund memo')
+        }
     price = forms.FloatField(disabled=True)
     account_number = forms.IntegerField(disabled=True, required=False)
     pix = forms.CharField(disabled=True, required=False)

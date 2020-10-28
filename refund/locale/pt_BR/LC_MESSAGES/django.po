@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 15:40-0300\n"
+"POT-Creation-Date: 2020-10-28 09:01-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: templates/refund/analysis_queue.html:9 templates/refund/payment_queue.html:9
+#: forms.py:13 forms.py:23 forms.py:34 templates/refund/analysis_queue.html:9
+#: templates/refund/payment_queue.html:9
 #: templates/refund/refund_bundle_detail.html:8
-#: templates/refund/solicitation_detail.html:7
+#: templates/refund/solicitation_detail.html:8
 msgid "Name"
 msgstr "Nome"
 
-#: templates/refund/analysis_queue.html:10
+#: forms.py:14 templates/refund/solicitation_detail.html:12
+msgid "Claim check"
+msgstr "Nota fiscal"
+
+#: forms.py:24 forms.py:35 forms.py:51 templates/refund/analysis_queue.html:10
 #: templates/refund/payment_queue.html:10
 #: templates/refund/refund_bundle_detail.html:9
-#: templates/refund/solicitation_detail.html:8
+#: templates/refund/solicitation_detail.html:9
 msgid "Price"
 msgstr "Preço"
 
+#: forms.py:36
+msgid "Accepted"
+msgstr "Aceito"
+
+#: forms.py:52
+msgid "Refund memo"
+msgstr "Nota fiscal"
+
 #: templates/refund/analysis_queue.html:11
-msgid "Creation Date"
+#: templates/refund/solicitation_detail.html:10
+msgid "Creation date"
 msgstr "Data de criação"
 
 #: templates/refund/analysis_queue.html:12
-#: templates/refund/solicitation_detail.html:10
+#: templates/refund/solicitation_detail.html:11
 msgid "Last modification"
 msgstr "Última modificação"
 
@@ -75,24 +89,17 @@ msgstr "Detalhes do pagamento"
 msgid "Solicitations"
 msgstr "Solicitações"
 
-#: templates/refund/solicitation_detail.html:3
+#: templates/refund/solicitation_detail.html:4
 msgid "Solicitation detail"
 msgstr "Detalhes da solicitação"
 
-#: templates/refund/solicitation_detail.html:9
-#, fuzzy
-#| msgid "Creation Date"
-msgid "Creation date"
-msgstr "Data de criação"
-
-#: templates/refund/solicitation_detail.html:11
-msgid "Claim check"
-msgstr "Nota fiscal"
-
-#: templates/refund/solicitation_detail.html:24
+#: templates/refund/solicitation_detail.html:25
 msgid "Solicitation items"
 msgstr "Items da solicitação"
 
-#: templates/refund/solicitation_detail.html:31
+#: templates/refund/solicitation_detail.html:32
 msgid "Edit"
 msgstr "Editar"
+
+#~ msgid "Account number"
+#~ msgstr "Número da conta"
