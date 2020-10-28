@@ -12,7 +12,7 @@ urlpatterns = [
     path('user', views.teste_logged_user, name='logged_user'),
     path('create_solicitation', views.create_solicitation,
          name='create_solicitation'),
-    re_path(r'^pay_refund/(?P<refund_bundle_id>\d*)',
+    re_path(r'^pay_refund/(?P<refundbundle_id>\d*)',
          views.pay_refundbundle, name='pay_refund'),
 
     re_path(r'^update_solicitation/(?P<solicitation_id>\d*)',
@@ -25,8 +25,8 @@ urlpatterns = [
         name='solicitation_detail'
     ),
     path(
-        'refund_bundle_detail/<int:refund_bundle_id>/',
+        'refundbundle_detail/<int:refundbundle_id>/',
         views.refund_bundle_detail,
-        name='refund_bundle_detail'
+        name='refundbundle_detail'
     )
 ]

@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-  <form action='/refund/pay_refund/' enctype="multipart/form-data" method='post'>
+  <form action='/refund/pay_refund/{{refundbundle.id}}' enctype="multipart/form-data" method='post'>
   {% csrf_token %}
+    <label for='account_number'>{% trans 'Account number' %}</label>
+    <p id='account_number'> {{refundbundle.user.account_number}} </p>
+    <label for='agency_number'>{% trans 'Agency number' %}</label>
+    <p id='agency_number'> {{refundbundle.user.agency_number}} </p>
+    <label for='pix'>{% trans 'Pix' %}</label>
+    <p id='pix'> {{refundbundle.user.pix}} </p>
+    <label for='user_name'>{% trans 'Name' %}</label>
+    <p id='pix'> {{refundbundle.user.first_name}} {{refundbundle.user.last_name}} </p>
     {{form}}
     <button>{% translate 'Send' %}</button>
   </form>

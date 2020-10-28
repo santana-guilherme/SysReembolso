@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-28 09:01-0300\n"
+"POT-Creation-Date: 2020-10-28 11:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: forms.py:13 forms.py:23 forms.py:34 templates/refund/analysis_queue.html:9
-#: templates/refund/payment_queue.html:9
+#: templates/refund/pay_refund.html:12 templates/refund/payment_queue.html:9
 #: templates/refund/refund_bundle_detail.html:8
 #: templates/refund/solicitation_detail.html:8
 msgid "Name"
@@ -29,7 +29,8 @@ msgstr "Nome"
 msgid "Claim check"
 msgstr "Nota fiscal"
 
-#: forms.py:24 forms.py:35 forms.py:51 templates/refund/analysis_queue.html:10
+#: forms.py:24 forms.py:35 forms.py:47 forms.py:52
+#: templates/refund/analysis_queue.html:10
 #: templates/refund/payment_queue.html:10
 #: templates/refund/refund_bundle_detail.html:9
 #: templates/refund/solicitation_detail.html:9
@@ -40,7 +41,7 @@ msgstr "Preço"
 msgid "Accepted"
 msgstr "Aceito"
 
-#: forms.py:52
+#: forms.py:53
 msgid "Refund memo"
 msgstr "Nota fiscal"
 
@@ -64,10 +65,24 @@ msgid "There are not solicitations in analysis"
 msgstr "Não há solicitações em análise"
 
 #: templates/refund/create_solicitation.html:22
-#: templates/refund/pay_refund.html:7
+#: templates/refund/pay_refund.html:15
 #: templates/refund/update_solicitation.html:10
 msgid "Send"
 msgstr "Enviar"
+
+#: templates/refund/pay_refund.html:6
+msgid "Account number"
+msgstr "Número da conta"
+
+#: templates/refund/pay_refund.html:8
+#, fuzzy
+#| msgid "Account number"
+msgid "Agency number"
+msgstr "Número da conta"
+
+#: templates/refund/pay_refund.html:10
+msgid "Pix"
+msgstr "Pix"
 
 #: templates/refund/payment_queue.html:4
 msgid "Refund requests waiting payment"
@@ -100,6 +115,3 @@ msgstr "Items da solicitação"
 #: templates/refund/solicitation_detail.html:32
 msgid "Edit"
 msgstr "Editar"
-
-#~ msgid "Account number"
-#~ msgstr "Número da conta"

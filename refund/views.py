@@ -2,10 +2,10 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from .forms import get_item_solicitation_formset, SolicitationForm, \
-    AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm
+    AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm, UpdateRefundBundleModelForm
 from .models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
-from .utils import is_analyst, is_member
+from .utils import is_analyst, is_member, is_treasurer
 # Create your views here.
 
 
@@ -31,11 +31,17 @@ def analysis_queue(request):
 
 @permission_required('refund.view_paymentqueue', login_url='/agents/login')
 def payment_queue(request):
-    refund_bundle_list = PaymentQueue.load().queue.all()
+    refundbundle_list = PaymentQueue.load().queue.all()
+    refundbundle_page = 'refund:refundbundle_detail'
+    if is_member(request.user, 'Treasurer'):
+        refundbundle_page = 'refund:pay_refund'
     return render(
         request,
         'refund/payment_queue.html',
-        {'refund_bundle_list': refund_bundle_list}
+        {
+            'refundbundle_list': refundbundle_list,
+            'refundbundle_page': refundbundle_page
+        }
     )
 
 
@@ -58,8 +64,8 @@ def solicitation_detail(request, solicitation_id):
     )
 
 
-def refund_bundle_detail(request, refund_bundle_id):
-    refund_bundle = RefundBundle.objects.filter(id=refund_bundle_id).first()
+def refund_bundle_detail(request, refundbundle_id):
+    refund_bundle = RefundBundle.objects.filter(id=refundbundle_id).first()
     solicitation_link = True
     if is_member(request.user, 'Treasurer'):
         solicitation_link = False
@@ -162,22 +168,29 @@ def update_solicitation(request, solicitation_id):
         'action_url': f'/refund/update_solicitation/{solicitation_id}' }
     )
 
-@permission_required('change_refundbundle', login_url='/agents/login')
-def pay_refundbundle(request, refund_bundle_id):
+@user_passes_test(is_treasurer)
+@permission_required('refund.change_refundbundle', login_url='/agents/login')
+def pay_refundbundle(request, refundbundle_id):
+    refundbundle = get_object_or_404(RefundBundle, id=refundbundle_id)
+    if refundbundle.state > 0:
+        return redirect('/')
+        
     if request.method == 'POST':
-        form = UpdateRefundBundleForm(request.POST, request.FILES)
+        form = UpdateRefundBundleModelForm(request.POST, request.FILES, instance=refundbundle)
         if form.is_valid():
-            for refund_bundle in form.save(commit=False):
-                refund_bundle.finish_refund()
+            received_refundbundle = form.save()
+            received_refundbundle.finish_refund()
+            return redirect('/')
     else:
-        form = UpdateRefundBundleForm(
-            queryset=RefundBundle.objects.filter(id=refund_bundle_id)
-        )
+        form = UpdateRefundBundleModelForm(instance=refundbundle)
 
     return render(
         request,
         'refund/pay_refund.html',
-        {'form': form}
+        {
+            'form': form,
+            'refundbundle': refundbundle
+        }
     )
 
 
