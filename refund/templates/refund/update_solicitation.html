@@ -8,6 +8,6 @@
             {{formset}}
         </table>
         <button> {% trans 'Send' %} </button>
-        {% comment %} <button type='button'> {% trans 'Cancel' %} </button> {% endcomment %}
+        <button type='button' onclick="windown.history.go(-1)"> {% trans 'Cancel' %} </button>
     </form>
 {% endblock content %}
