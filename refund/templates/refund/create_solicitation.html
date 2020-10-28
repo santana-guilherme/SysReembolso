@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block extra_head %}
+{% block custom_extra_head %}
     {% load static %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'refund/create_solicitation.js' %}"></script>
-{% endblock extra_head %}
+{% endblock custom_extra_head %}
 
 
 {% block content %}
@@ -20,6 +20,7 @@
       <button id='add_item' type="button">+</button>
       <button id='remove_last' type="button">-</button>
       <button type='submit'>{% translate 'Send' %}</button>
+      <button type='button' onclick="window.history.go(-1)"> {% trans 'Cancel' %} </button>
     </form>
 
     <div style='display:none' id ='empty_form'>
