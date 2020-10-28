@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block content %}
     <h2>{% trans 'Refund requests waiting payment'%}</h2>
-    {%if refund_bundle_list %}
+    {%if refundbundle_list %}
     <table>
       <thead>
         <tr>
@@ -13,12 +13,12 @@
         </tr>
       </thead>
       <tbody>
-        {% for refund_bundle in refund_bundle_list %}
+        {% for refundbundle in refundbundle_list %}
         <tr>
-          <td> <a href="{% url 'refund:refund_bundle_detail' refund_bundle.id %}">{{ refund_bundle.user.first_name |title }}</a> </td>
-          <td> R$ {{ refund_bundle.price }}</td>
-          <td> {{ refund_bundle.get_state }} </td>
-          <td> {{ refund_bundle.accepting_solicitations }} </td>
+          <td> <a href="{% url refundbundle_page refundbundle.id %}">{{ refundbundle.user.first_name |title }}</a> </td>
+          <td> R$ {{ refundbundle.price }}</td>
+          <td> {{ refundbundle.get_state }} </td>
+          <td> {{ refundbundle.accepting_solicitations }} </td>
         </tr>
         {% endfor %}
       </tbody>

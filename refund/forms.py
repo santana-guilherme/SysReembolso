@@ -44,16 +44,14 @@ AnalyseItemsSolicitationFormSet = modelformset_factory(
 )
 
 class UpdateRefundBundleModelForm(ModelForm):
+    price = forms.FloatField(disabled=True, label=_("Price"))
     class Meta:
         model = RefundBundle
-        fields = ['price', 'account_number', 'pix', 'refund_memo']
+        fields = ['price', 'refund_memo']
         labels = {
             'price': _('Price'),
             'refund_memo': _('Refund memo')
         }
-    price = forms.FloatField(disabled=True)
-    account_number = forms.IntegerField(disabled=True, required=False)
-    pix = forms.CharField(disabled=True, required=False)
 
 #Apperently modelform_factory has a problem validating disabled fields
 #https://stackoverflow.com/questions/19006895/django-validate-a-disabled-field-in-modelform-factory
