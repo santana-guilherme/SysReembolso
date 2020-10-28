@@ -19,7 +19,7 @@ def analysis_queue(request):
         solicitations = AnalysisQueue.load().queue.filter(user=request.user)
     else:
         solicitations = AnalysisQueue.load().queue.all()
-        
+
     solicitation_page = 'refund:solicitation_detail'
     if is_member(request.user, 'Analyst'):
         solicitation_page = 'refund:analyse_solicitation'
@@ -70,6 +70,7 @@ def finished_queue(request):
     )
 
 
+@permission_required('refund.view_solicitation')
 def solicitation_detail(request, solicitation_id):
     solicitation = Solicitation.objects.filter(id=solicitation_id).first()
     return render(
