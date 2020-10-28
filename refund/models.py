@@ -58,9 +58,7 @@ class RefundBundle(models.Model):
     """
     price = models.FloatField(default=0)
     state = models.IntegerField(default=0)
-    account_number = models.IntegerField(null=True) #TODO: null false, vem de user
-    pix = models.CharField(null=True, max_length=20)
-    refund_memo = models.ImageField()
+    refund_memo = models.ImageField(upload_to='refund_memos')
     accepting_solicitations = models.BooleanField(default=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -89,6 +87,9 @@ class RefundBundle(models.Model):
                 self.save()
             except RuntimeError as e:
                 logging.error(str(e))
+
+    def get_state(self):
+        return REFUNDBUNDLE_STATE[self.state]
 
 
 class Solicitation(models.Model):

@@ -15,7 +15,11 @@ def index(request):
 
 @login_required(login_url='/agents/login')
 def analysis_queue(request):
-    solicitations = AnalysisQueue.load().queue.all()
+    if is_member(request.user, 'Employee') and not request.user.is_superuser:
+        solicitations = AnalysisQueue.load().queue.filter(user=request.user)
+    else:
+        solicitations = AnalysisQueue.load().queue.all()
+        
     solicitation_page = 'refund:solicitation_detail'
     if is_member(request.user, 'Analyst'):
         solicitation_page = 'refund:analyse_solicitation'
@@ -31,7 +35,11 @@ def analysis_queue(request):
 
 @permission_required('refund.view_paymentqueue', login_url='/agents/login')
 def payment_queue(request):
-    refundbundle_list = PaymentQueue.load().queue.all()
+    if is_member(request.user, 'Employee') and not request.user.is_superuser:
+        refundbundle_list = PaymentQueue.load().queue.filter(user=request.user)
+    else:
+        refundbundle_list = PaymentQueue.load().queue.all()
+
     refundbundle_page = 'refund:refundbundle_detail'
     if is_member(request.user, 'Treasurer'):
         refundbundle_page = 'refund:pay_refund'
@@ -45,13 +53,20 @@ def payment_queue(request):
     )
 
 
+@login_required(login_url='/agents/login')
 @permission_required('refund.view_finishedqueue', login_url='/agents/login')
 def finished_queue(request):
-    finished_refunds = FinishedQueue.load().queue.all()
+    if is_member(request.user, 'Employee') and not request.user.is_superuser :
+        finished_refunds = FinishedQueue.load().queue.filter(user=request.user)
+    else:
+        finished_refunds = FinishedQueue.load().queue.all()
     return render(
         request,
-        'refund/payment_queue.html',
-        {'refund_bundle_list': finished_refunds}
+        'refund/finished_queue.html',
+        {
+            'refundbundle_list': finished_refunds,
+            'refundbundle_page': 'refund:refundbundle_detail'
+        }
     )
 
 
@@ -174,7 +189,7 @@ def pay_refundbundle(request, refundbundle_id):
     refundbundle = get_object_or_404(RefundBundle, id=refundbundle_id)
     if refundbundle.state > 0:
         return redirect('/')
-        
+
     if request.method == 'POST':
         form = UpdateRefundBundleModelForm(request.POST, request.FILES, instance=refundbundle)
         if form.is_valid():

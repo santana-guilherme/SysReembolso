@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-28 11:30-0300\n"
+"POT-Creation-Date: 2020-10-28 15:11-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: forms.py:13 forms.py:23 forms.py:34 templates/refund/analysis_queue.html:9
-#: templates/refund/pay_refund.html:12 templates/refund/payment_queue.html:9
+#: templates/refund/pay_refund.html:12
 #: templates/refund/refund_bundle_detail.html:8
 #: templates/refund/solicitation_detail.html:8
 msgid "Name"
@@ -31,6 +31,7 @@ msgstr "Nota fiscal"
 
 #: forms.py:24 forms.py:35 forms.py:47 forms.py:52
 #: templates/refund/analysis_queue.html:10
+#: templates/refund/finished_queue.html:10
 #: templates/refund/payment_queue.html:10
 #: templates/refund/refund_bundle_detail.html:9
 #: templates/refund/solicitation_detail.html:9
@@ -69,6 +70,18 @@ msgstr "Não há solicitações em análise"
 #: templates/refund/update_solicitation.html:10
 msgid "Send"
 msgstr "Enviar"
+
+#: templates/refund/finished_queue.html:4
+msgid "Finished refunds"
+msgstr "Reembolsos finalizados"
+
+#: templates/refund/finished_queue.html:9 templates/refund/payment_queue.html:9
+msgid "Code"
+msgstr "Código"
+
+#: templates/refund/finished_queue.html:25
+msgid "There are no finished refunds"
+msgstr "Não há pedidos de reembolsos finalizados"
 
 #: templates/refund/pay_refund.html:6
 msgid "Account number"
