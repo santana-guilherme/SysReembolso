@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+
 {% block custom_extra_head %}
     {% load static %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'refund/create_solicitation.js' %}"></script>
+    <script src="{% static 'refund/js/zoom-master/jquery.zoom.js' %}"></script>
+    <script src="{% static 'refund/js/create_solicitation.js' %}"></script>
 {% endblock custom_extra_head %}
 
 
 {% block content %}
-    <form action='{{ action_url }}' enctype="multipart/form-data" method='post'>
+    <form action='{{ action_url }}' enctype="multipart/form-data" method='post' class='uniForm'>
       {% csrf_token %}
-      
-      {{form.as_p}}
-
-      <table>
-        {{formset}}
-      </table>
-
+      {{ form.name| as_crispy_field }} 
+      {{ form.claim_check| as_crispy_field }}
+      <span id='img_preview_container'>
+        <img id='img_preview' src="" width='auto' height='520'/>
+      </span>
+      {{ formset|crispy }}
       <button id='add_item' type="button">+</button>
       <button id='remove_last' type="button">-</button>
-      <button type='submit'>{% translate 'Send' %}</button>
-      <button type='button' onclick="window.history.go(-1)"> {% trans 'Cancel' %} </button>
+      <button type='submit' class="btn btn-primary">{% translate 'Send' %}</button>
+      <button type='button' class="btn btn-danger" 
+            onclick="window.history.go(-1)"> {% trans 'Cancel' %} </button>
     </form>
 
     <div style='display:none' id ='empty_form'>
-      <table>
-        {{ formset.empty_form }}
-      </table>
+      {{ formset.empty_form | crispy }}
     </div>
 {% endblock content %}
+

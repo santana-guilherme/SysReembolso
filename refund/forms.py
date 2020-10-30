@@ -6,11 +6,13 @@ from .models import Solicitation, ItemSolicitation, RefundBundle
 
 
 class SolicitationForm(ModelForm):
+
+    name = forms.CharField(initial='', label=_("Name"), 
+        help_text='Nome da atividade que gerou o custo')
     class Meta:
         model = Solicitation
         fields = ['name', 'claim_check']
         labels = {
-            'name': _("Name"),
             'claim_check': _("Claim check")
         }
 

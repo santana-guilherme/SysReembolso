@@ -159,15 +159,21 @@ def update_solicitation(request, solicitation_id):
             Você não pode atualizar essa solicitação')
     if request.method == 'POST':
         form = SolicitationForm(request.POST, request.FILES, instance=solicitation)
-        ItemSolicitationFormset = get_item_solicitation_formset()
+        ItemSolicitationFormset = get_item_solicitation_formset(can_delete=True)
         formset = ItemSolicitationFormset(request.POST, prefix='items')
         if form.is_valid():
             solicitation = form.save()
-
             items = formset.save(commit=False)
             for item in items:
                 item.solicitation = solicitation
                 item.save()
+
+            for obj in formset.deleted_objects:
+                obj.delete()
+
+            if len(solicitation.items.all()) == 0:
+                solicitation.delete()
+                return redirect('/refund/analysis')
             return redirect(f'/refund/solicitation_detail/{solicitation.id}')
     else:
         form = SolicitationForm(instance=solicitation)
