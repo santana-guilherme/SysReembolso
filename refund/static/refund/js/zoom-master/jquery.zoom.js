@@ -43,8 +43,8 @@ $(document).ready(() => {
                     top: 0,
                     left: 0,
                     opacity: 0,
-                    width: img.width * magnify,
-                    height: img.height * magnify,
+                    width: 'auto', // img.width * magnify
+                    height: source.offsetHeight * 2, //img.height * magnify
                     border: 'none',
                     maxWidth: 'none',
                     maxHeight: 'none'
