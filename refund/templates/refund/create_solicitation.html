@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'refund/js/zoom-master/jquery.zoom.js' %}"></script>
     <script src="{% static 'refund/js/create_solicitation.js' %}"></script>
+    <link rel='stylesheet' href="{% static 'refund/css/create_solicitation.css' %}"/>
 {% endblock custom_extra_head %}
 
 
@@ -16,7 +17,7 @@
       {{ form.name| as_crispy_field }} 
       {{ form.claim_check| as_crispy_field }}
       <span id='img_preview_container'>
-        <img id='img_preview' src="" width='auto' height='520'/>
+        <img id='img_preview' src="" width='auto' height='520' style='display:none'/>
       </span>
       {{ formset|crispy }}
       <button id='add_item' type="button">+</button>

@@ -4,3 +4,6 @@ db.sqlite3
 media/*
 *.pyc
 *.env
+*.jpeg
+*.jpg
+*.png

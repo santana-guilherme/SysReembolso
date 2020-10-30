@@ -19,8 +19,8 @@ $(document).ready(function () {
     })
 
     $('#img_preview').on('load',() => {
+        $('.zoomImg').remove()
         $('#img_preview_container').zoom()
-        console.log('callback')
     })
 
     $('#id_claim_check').change(() => {
@@ -32,9 +32,8 @@ $(document).ready(function () {
         reader.onload = (e) => {
             image = document.getElementById('img_preview')
             image.src = e.target.result
-            console.log("image changed")
+            $(image).css('display', 'inline-block')
         }
         reader.readAsDataURL(file)
-        console.log('change')
     })
 })
