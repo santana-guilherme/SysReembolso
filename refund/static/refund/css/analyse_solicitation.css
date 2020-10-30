@@ -1,25 +1,33 @@
-#img_preview_container {
+#claim_check_container {
     display:inline-block;
     position: relative;
 }
 
 
 @media(min-width: 700px) {
-    #div_id_name {
-        width: 40rem;
+    .solicitation_info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
     }
 
-    .form-control,
-    #div_id_name div #id_name {
+    .solicitation_info h3,  p {
+        margin: 0;
+    }
+    .solicitation_info h3 {
+        margin-right: 13px;
+    }
+
+    .form-control {
         border-radius: 10px;
     }
-
     
     #items_n_image,
     #solicitation_form {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+        flex-direction: row-reverse;
     }
 
     #itemsolicitation_form {
@@ -36,5 +44,9 @@
 
     #form_item input {
         width: 95%;
+    }
+
+    #claim_check_container h3 {
+        margin-top: 0;
     }
 }

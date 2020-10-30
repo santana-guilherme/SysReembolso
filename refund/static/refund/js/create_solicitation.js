@@ -2,20 +2,15 @@ $(document).ready(function () {
 
     $('#add_item').click(function () {
         var next_id = $('#id_items-TOTAL_FORMS').val()
-        $('.multiField').append($('#empty_form').html().replace(/__prefix__/g, next_id))
+        $('#itemsolicitation_form').append("<div id='form_item'></div>")
+        $('#itemsolicitation_form #form_item:last-child').append($('#empty_form').html().replace(/__prefix__/g, next_id))
         $('#id_items-TOTAL_FORMS').val(parseInt(next_id) + 1)
     })
 
     $('#remove_last').click(() => {
         var id = $('#id_items-TOTAL_FORMS').val()
-        const fields = $('#empty_form > div').length
-        if (id > 1) {
-            for (let i = fields; i > 0; i--) {
-                $('.multiField > div:last').remove()
-            }
-            $('.multiField > input:last').remove()
-            $('#id_items-TOTAL_FORMS').val(parseInt(id) - 1)
-        }
+        $('#itemsolicitation_form #form_item:last-child').remove()
+        $('#id_items-TOTAL_FORMS').val(parseInt(id) - 1)
     })
 
     $('#img_preview').on('load',() => {

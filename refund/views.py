@@ -134,15 +134,15 @@ def analyse_solicitation(request, solicitation_id):
     solicitation = get_object_or_404(
             Solicitation, id=solicitation_id, state=0)
     if request.method == 'POST':
-        formset = AnalyseItemsSolicitationFormSet(request.POST)
+        formset = AnalyseItemsSolicitationFormSet(request.POST,
+            queryset=ItemSolicitation.objects.filter(solicitation=solicitation))
         if formset.is_valid():
             formset.save()
             solicitation.authorize()
             return redirect('/')
     else:
         formset = AnalyseItemsSolicitationFormSet(
-            queryset=ItemSolicitation.objects.filter(
-                solicitation=solicitation),
+            queryset=ItemSolicitation.objects.filter(solicitation=solicitation)
         )
 
     return render(

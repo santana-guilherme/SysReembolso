@@ -1,5 +1,6 @@
 from django.forms import ModelForm, modelformset_factory
 from django import forms
+from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext as _
 from .models import Solicitation, ItemSolicitation, RefundBundle
 
@@ -29,21 +30,20 @@ def get_item_solicitation_formset(extra: int = 0, can_delete:bool = False):
 
 
 class AnalyseItemsSolicitationForm(ModelForm):
+
+    name = forms.CharField(disabled=True, label=_('Name'))
+    price = forms.FloatField(disabled=True, label=_('Price'))
+
     class Meta:
         model = ItemSolicitation
-        fields = ['name', 'price','accepted']
+        fields = ['name', 'price', 'accepted']
         labels = {
-            'name': _("Name"),
-            'price': _("Price"),
             'accepted': _("Accepted")
         }
-    name = forms.CharField(disabled=True)
-    price = forms.FloatField(disabled=True)
 
 
 AnalyseItemsSolicitationFormSet = modelformset_factory(
-  model=ItemSolicitation, form=AnalyseItemsSolicitationForm, extra=0
-)
+  model=ItemSolicitation, form=AnalyseItemsSolicitationForm, extra=0)
 
 class UpdateRefundBundleModelForm(ModelForm):
     price = forms.FloatField(disabled=True, label=_("Price"))

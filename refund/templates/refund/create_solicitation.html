@@ -4,7 +4,6 @@
 
 {% block custom_extra_head %}
     {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'refund/js/zoom-master/jquery.zoom.js' %}"></script>
     <script src="{% static 'refund/js/create_solicitation.js' %}"></script>
     <link rel='stylesheet' href="{% static 'refund/css/create_solicitation.css' %}"/>
@@ -14,11 +13,25 @@
 {% block content %}
     <form action='{{ action_url }}' enctype="multipart/form-data" method='post' class='uniForm'>
       {% csrf_token %}
-      {{ form| crispy }}
-      <span id='img_preview_container'>
-        <img id='img_preview' src="" width='auto' height='520' style='display:none'/>
-      </span>
-      {{ formset|crispy }}
+      <div id='solicitation_form'>
+        {{ form| crispy }}
+      </div>
+
+      <div id='items_n_image'>
+        <div id="itemsolicitation_form">
+        {{ formset.management_form }}
+            {% for form in formset %}
+                <div id="form_item">
+                    {{ form.name | as_crispy_field }}
+                    {{ form.price | as_crispy_field }}
+                </div>
+            {% endfor %}
+            {% comment %} {{ formset.name |as_crispy_field }} {% endcomment %}
+        </div>
+        <span id='img_preview_container'>
+            <img id='img_preview' src="" width='auto' height='520' style='display:none'/>
+        </span>
+      </div>
       <button id='add_item' type="button">+</button>
       <button id='remove_last' type="button">-</button>
       <button type='submit' class="btn btn-primary">{% translate 'Send' %}</button>
