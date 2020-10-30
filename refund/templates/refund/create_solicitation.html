@@ -14,8 +14,7 @@
 {% block content %}
     <form action='{{ action_url }}' enctype="multipart/form-data" method='post' class='uniForm'>
       {% csrf_token %}
-      {{ form.name| as_crispy_field }} 
-      {{ form.claim_check| as_crispy_field }}
+      {{ form| crispy }}
       <span id='img_preview_container'>
         <img id='img_preview' src="" width='auto' height='520' style='display:none'/>
       </span>
