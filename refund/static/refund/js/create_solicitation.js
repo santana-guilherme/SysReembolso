@@ -31,4 +31,17 @@ $(document).ready(function () {
         }
         reader.readAsDataURL(file)
     })
+
+    $('#id_claim_check').parent().ready(() => {
+        const imgURL = $('#id_claim_check').parent().children('a').attr('href')
+
+        if (imgURL === undefined || imgURL === '') {
+            return
+        }
+        console.log("asdf", $('#img_preview'))
+        img = $('#img_preview')
+        img.attr('src', imgURL)
+        img.css('display', 'inline-block')
+        console.log("executed")
+    })
 })
