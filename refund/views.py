@@ -114,7 +114,7 @@ def create_solicitation(request):
             for item in items:
                 item.solicitation = new_solicitation
                 item.save()
-            return redirect('index')
+            return redirect('refund:index')
     else:
         ItemSolicitationFormset = get_item_solicitation_formset(extra=1)
         formset = ItemSolicitationFormset(
@@ -139,7 +139,7 @@ def analyse_solicitation(request, solicitation_id):
         if formset.is_valid():
             formset.save()
             solicitation.authorize()
-            return redirect('index')
+            return redirect('refund:index')
     else:
         formset = AnalyseItemsSolicitationFormSet(
             queryset=ItemSolicitation.objects.filter(solicitation=solicitation)
@@ -173,9 +173,9 @@ def update_solicitation(request, solicitation_id):
 
             if len(solicitation.items.all()) == 0:
                 solicitation.delete()
-                return redirect('analysis_queue')
+                return redirect('refund:analysis_queue')
 
-            return redirect('solicitation_detail', solicitation_id=solicitation.id)
+            return redirect('refund:solicitation_detail', solicitation_id=solicitation.id)
     else:
         form = SolicitationForm(instance=solicitation)
         ItemSolicitationFormset = get_item_solicitation_formset(extra=0, can_delete=True)
@@ -196,14 +196,14 @@ def update_solicitation(request, solicitation_id):
 def pay_refundbundle(request, refundbundle_id):
     refundbundle = get_object_or_404(RefundBundle, id=refundbundle_id)
     if refundbundle.state > 0:
-        return redirect('index')
+        return redirect('refund:index')
 
     if request.method == 'POST':
         form = UpdateRefundBundleModelForm(request.POST, request.FILES, instance=refundbundle)
         if form.is_valid():
             received_refundbundle = form.save()
             received_refundbundle.finish_refund()
-            return redirect('index')
+            return redirect('refund:index')
     else:
         form = UpdateRefundBundleModelForm(instance=refundbundle)
 

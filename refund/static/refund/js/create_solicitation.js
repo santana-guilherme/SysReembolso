@@ -34,7 +34,7 @@ $(document).ready(function () {
 
     $('#id_claim_check').parent().ready(() => {
         const imgURL = $('#id_claim_check').parent().children('a').attr('href')
-
+        //TODO: improove this
         if (imgURL === undefined || imgURL === '') {
             return
         }
