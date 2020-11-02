@@ -11,7 +11,7 @@
     <p id='pix'> {{refundbundle.user.pix}} </p>
     <label for='user_name'>{% trans 'Name' %}</label>
     <p id='pix'> {{refundbundle.user.first_name}} {{refundbundle.user.last_name}} </p>
-    {{form}}
+    {{form.as_p}}
     <button>{% translate 'Send' %}</button>
   </form>
 {% endblock content %}

@@ -16,7 +16,7 @@ def registerUser(request):
             user.save()
             group.user_set.add(user)
             group.save()
-            return redirect('/agents/login')
+            return redirect('login')
     else:
         form = UserRegistrationForm()
     return render(
