@@ -1,34 +1,46 @@
 {% extends "base.html" %}
 {% load i18n %}
+
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'refund/css/solicitation_detail.css' %}"/>
+{% endblock custom_extra_head %}
 {% block content %}
   <h2>{% trans 'Solicitation detail' %}</h2>
-  <table>
-    <thead>
-      <tr>
-        <td>{% trans 'Name' %}</td>
-        <td>{% trans 'Price' %}</td>
-        <td>{% trans 'Creation date' %}</td>
-        <td>{% trans 'Last modification' %}</td>
-        <td>{% trans 'Claim check' %} </td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td> {{ solicitation.name }} </td>
-        <td> R$ {{ solicitation.price }} </td>
-        <td> {{ solicitation.created | date:"d/m/Y"}} </td>
-        <td> {{ solicitation.updated | date:"d/m/Y"}} </td>
-        <td> <img src="{{solicitation.claim_check.url}}" width='100' /> </td>
-      </tr>
-    </tbody>
-  </table>
-  <h4>{% trans 'Solicitation items' %}</h4>
-  <ul>
-    {% for item in solicitation.items.all %}
-      <li> {{ item.name | title}} -- R$ {{item.price}} -- {{item.accepted}}</li>
-    {% endfor %}
-  </ul>
+  <div class="solicitation-content">
+    <div id='solicitation-info'>
+      <div class="info-item">
+          <label for='solicitation-name'>{% trans 'Name' %}:</label>
+          <p id='solicitation-name'>{{ solicitation.name }}</p>
+      </div>
+      <div class="info-item">
+          <label for='owner'>{% trans 'Requester' %}</label>
+          <p id='owner'>{{ solicitation.user.first_name }} {{solicitation.user.last_name}}</p>
+      </div>
+      <div class="info-item">
+          <label for='created'>{% trans 'Creation date' %}</label>
+          <p id='created'>{{ solicitation.created }}</p>
+      </div>
+      <div class="info-item">
+          <label for='updated'>{% trans 'Last modification' %}</label>
+          <p id='updated'>{{ solicitation.updated }}</p>
+      </div>
+
+      <h4>{% trans 'Solicitation items' %}</h4>
+      <ul id='solicitation-items-list'>
+        {% for item in solicitation.items.all %}
+          <li
+          class='{% if item.accepted is True %} green {% elif item.accepted is False %} red {% endif %}'>
+            <b>{{ item.name |title}}</b> -- R$ {{item.price}}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <img src="{{solicitation.claim_check.url}}" alt="nota fiscal" class="img_preview"/>
+  </div>
   {% if perms.refund.change_solicitation and solicitation.state == 0 %}
-    <a href="{% url 'refund:update_solicitation' solicitation.id %}"><button>{% trans 'Edit' %}</button></a>
+    <a href="{% url 'refund:update_solicitation' solicitation.id %}">
+      <button>{% trans 'Edit' %}</button>
+    </a>
   {% endif %}
 {% endblock content %}

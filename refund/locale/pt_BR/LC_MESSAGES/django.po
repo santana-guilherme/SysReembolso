@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-31 10:38-0300\n"
+"POT-Creation-Date: 2020-11-03 13:02-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 #: templates/refund/analyse_solicitation.html:16
 #: templates/refund/analysis_queue.html:9 templates/refund/pay_refund.html:12
 #: templates/refund/refund_bundle_detail.html:8
-#: templates/refund/solicitation_detail.html:8
+#: templates/refund/solicitation_detail.html:13
 msgid "Name"
 msgstr "Nome"
 
-#: forms.py:17 templates/refund/solicitation_detail.html:12
+#: forms.py:17
 msgid "Claim check"
 msgstr "Nota fiscal"
 
@@ -35,7 +35,6 @@ msgstr "Nota fiscal"
 #: templates/refund/finished_queue.html:10
 #: templates/refund/payment_queue.html:10
 #: templates/refund/refund_bundle_detail.html:9
-#: templates/refund/solicitation_detail.html:9
 msgid "Price"
 msgstr "Preço"
 
@@ -48,12 +47,12 @@ msgid "Refund memo"
 msgstr "Nota fiscal"
 
 #: templates/refund/analysis_queue.html:11
-#: templates/refund/solicitation_detail.html:10
+#: templates/refund/solicitation_detail.html:21
 msgid "Creation date"
 msgstr "Data de criação"
 
 #: templates/refund/analysis_queue.html:12
-#: templates/refund/solicitation_detail.html:11
+#: templates/refund/solicitation_detail.html:25
 msgid "Last modification"
 msgstr "Última modificação"
 
@@ -68,7 +67,6 @@ msgstr "Não há solicitações em análise"
 
 #: templates/refund/create_solicitation.html:38
 #: templates/refund/pay_refund.html:15
-#: templates/refund/update_solicitation.html:10
 msgid "Send"
 msgstr "Enviar"
 
@@ -120,15 +118,19 @@ msgstr "Detalhes do pagamento"
 msgid "Solicitations"
 msgstr "Solicitações"
 
-#: templates/refund/solicitation_detail.html:4
+#: templates/refund/solicitation_detail.html:9
 msgid "Solicitation detail"
 msgstr "Detalhes da solicitação"
 
-#: templates/refund/solicitation_detail.html:25
+#: templates/refund/solicitation_detail.html:17
+msgid "Requester"
+msgstr "Solicitante"
+
+#: templates/refund/solicitation_detail.html:29
 msgid "Solicitation items"
 msgstr "Items da solicitação"
 
-#: templates/refund/solicitation_detail.html:32
+#: templates/refund/solicitation_detail.html:66
 msgid "Edit"
 msgstr "Editar"
 

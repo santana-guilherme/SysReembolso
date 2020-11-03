@@ -2,7 +2,33 @@
 {% load i18n %}
 {% block content %}
     <h2>{% trans 'Refund bundle detail' %}</h2>
-    <table>
+    <div class="refund-content">
+        <div class="refund-details">
+            <div class="item-info">
+                <label for="requester">{% trans 'Name' %}</label>
+                <p id='requester'>{{ refund_bundle.user.first_name }} {{ refund_bundle.user.last_name }}</p>
+            </div>
+            <div class="item-info">
+                <label for="requester">{% trans 'Price' %}</label>
+                <p id='requester'>{{ refund_bundle.price }}</p>
+            </div>
+
+            <h4>{% trans 'Solicitations' %}</h4>
+            <ul id='solicitations-list'>
+            {% for solicitation in refund_bundle.solicitations.all %}
+                <li>
+                    <a href="
+                      {% if solicitation_link %}
+                          {% url 'refund:solicitation_detail' solicitation.id %}
+                      {% endif %}">
+                      {{ solicitation.name | title}}
+                    </a> -- R$ {{solicitation.price}}
+                </li>
+            {% endfor %}
+    </ul>
+        </div>
+    </div>
+    {% comment %} <table>
         <thead>
         <tr>
             <td>{% trans 'Name' %}</td>
@@ -15,19 +41,6 @@
             <td> R$ {{ refund_bundle.price }} </td>
         </tr>
         </tbody>
-    </table>
-    <h4>{% trans 'Solicitations' %}</h4>
-    <ul>
-        {% for solicitation in refund_bundle.solicitations.all %}
-            <li>
-                <a href="
-                    {% if solicitation_link %}
-                        {% url 'refund:solicitation_detail' solicitation.id %}
-                    {% endif %}">
-                    {{ solicitation.name | title}}
-                </a> -- R$ {{solicitation.price}}
-            </li>
-        {% endfor %}
-    </ul>
+    </table> {% endcomment %}
 {% endblock content %}
   
