@@ -1,0 +1,50 @@
+.refund-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.info-item label {
+    margin-right: 12px;
+    margin-bottom: 0;
+}
+
+.info-item p {
+    margin: 0;
+}
+
+#solicitations-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#solicitations-list li b a {
+    text-decoration: none;
+    /* color: #444242; */
+}
+
+.green {
+    color: #008000;
+}
+
+.red {
+    color: #e56060;
+}
+
+.refund-memo{
+    height: auto;
+    max-width: 346px;/*TODO: improove*/
+}
+
+
+@media(min-width: 700px) {
+    .refund-content {
+        flex-direction: row;
+    }
+}
