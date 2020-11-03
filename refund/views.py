@@ -204,14 +204,13 @@ def pay_refundbundle(request, refundbundle_id):
             received_refundbundle = form.save()
             received_refundbundle.finish_refund()
             return redirect('refund:index')
-    else:
-        form = UpdateRefundBundleModelForm(instance=refundbundle)
+        else:
+            print(form)
 
     return render(
         request,
         'refund/pay_refund.html',
         {
-            'form': form,
             'refundbundle': refundbundle
         }
     )

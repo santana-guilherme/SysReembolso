@@ -1,17 +1,42 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'refund/css/pay_refund.css' %}">
+    <script src="{% static 'refund/js/pay_refund.js' %}" ></script>
+{% endblock custom_extra_head %}
 {% block content %}
   <form action='/refund/pay_refund/{{refundbundle.id}}' enctype="multipart/form-data" method='post'>
   {% csrf_token %}
-    <label for='account_number'>{% trans 'Account number' %}</label>
-    <p id='account_number'> {{refundbundle.user.account_number}} </p>
-    <label for='agency_number'>{% trans 'Agency number' %}</label>
-    <p id='agency_number'> {{refundbundle.user.agency_number}} </p>
-    <label for='pix'>{% trans 'Pix' %}</label>
-    <p id='pix'> {{refundbundle.user.pix}} </p>
-    <label for='user_name'>{% trans 'Name' %}</label>
-    <p id='pix'> {{refundbundle.user.first_name}} {{refundbundle.user.last_name}} </p>
-    {{form.as_p}}
+    <div class="refund-content">
+        <div class="user-info">
+            <div class="info-item">
+                <label for='user_name'>{% trans 'Name' %}:</label>
+                <p id='user_name'> {{refundbundle.user.first_name}} {{refundbundle.user.last_name}} </p>
+            </div>
+            <div class="info-item">
+                <label for='price'>{% trans 'Price' %}:</label>
+                <p id='price'>{% trans 'US$' %} {{refundbundle.price}}</p>
+            </div>
+            <div class="info-item">
+                <label for='account_number'>{% trans 'Account number' %}:</label>
+                <p id='account_number'> {{refundbundle.user.account_number}} </p>
+            </div>
+            <div class="info-item">
+                <label for='agency_number'>{% trans 'Agency number' %}:</label>
+                <p id='agency_number'> {{refundbundle.user.agency_number}} </p>
+            </div>
+            <div class="info-item">
+                <label for='pix'>{% trans 'Pix' %}:</label>
+                <p id='pix'> {{refundbundle.user.pix}} </p>
+            </div>
+        </div>
+        <div class="refund_memo">
+            <input type="file" name='refund_memo' accept='image/*' id='id_refund_memo'>
+            <img src='' alt='nota fiscal' id='refund-memo-img'/>
+        </div>
+    </div>
     <button>{% translate 'Send' %}</button>
   </form>
 {% endblock content %}

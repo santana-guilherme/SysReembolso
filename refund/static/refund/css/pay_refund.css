@@ -1,0 +1,38 @@
+.refund-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.info-item p {
+    margin: 0;
+}
+
+.info-item label {
+    margin-bottom: 0;
+    margin-right: 12px;
+}
+
+#refund-memo-img {
+    height: 520px;
+    width: auto;
+    display: none;
+    margin-bottom: 10px;
+}
+
+#id_refund_memo {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media(min-width: 700px) {
+    .refund-content {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
