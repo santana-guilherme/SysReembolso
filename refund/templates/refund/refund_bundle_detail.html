@@ -1,32 +1,42 @@
 {% extends "base.html" %}
 {% load i18n %}
+
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'refund/css/refund_bundle_detail.css' %}">
+{% endblock custom_extra_head %}
 {% block content %}
     <h2>{% trans 'Refund bundle detail' %}</h2>
     <div class="refund-content">
         <div class="refund-details">
-            <div class="item-info">
+            <div class="info-item">
                 <label for="requester">{% trans 'Name' %}</label>
                 <p id='requester'>{{ refund_bundle.user.first_name }} {{ refund_bundle.user.last_name }}</p>
             </div>
-            <div class="item-info">
+            <div class="info-item">
                 <label for="requester">{% trans 'Price' %}</label>
-                <p id='requester'>{{ refund_bundle.price }}</p>
+                <p id='requester'> {% trans 'US$'%} {{ refund_bundle.price }}</p>
             </div>
 
             <h4>{% trans 'Solicitations' %}</h4>
             <ul id='solicitations-list'>
-            {% for solicitation in refund_bundle.solicitations.all %}
-                <li>
-                    <a href="
-                      {% if solicitation_link %}
-                          {% url 'refund:solicitation_detail' solicitation.id %}
-                      {% endif %}">
-                      {{ solicitation.name | title}}
-                    </a> -- R$ {{solicitation.price}}
-                </li>
-            {% endfor %}
-    </ul>
+              {% for solicitation in refund_bundle.solicitations.all %}
+                  <li>
+                    <b>
+                        <a href="
+                            {% if solicitation_link %}
+                                {% url 'refund:solicitation_detail' solicitation.id %}
+                            {% endif %}">
+                            {{ solicitation.name | title}}
+                        </a>
+                    </b> -- R$ {{solicitation.price}}
+                  </li>
+              {% endfor %}
+            </ul>
         </div>
+        {% if refund_bundle.refund_memo %}
+            <img src="{{refund_bundle.refund_memo.url}}" alt="nota fiscal de pagamento" class="refund-memo">
+        {% endif %}
     </div>
     {% comment %} <table>
         <thead>
