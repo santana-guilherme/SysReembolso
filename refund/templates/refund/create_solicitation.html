@@ -9,6 +9,9 @@
     <link rel='stylesheet' href="{% static 'refund/css/create_solicitation.css' %}"/>
 {% endblock custom_extra_head %}
 
+{% block page_name %}
+    <h2>{% trans 'Create solicitation' %}</h2>
+{% endblock page_name %}
 
 {% block content %}
     <form action='{{ action_url }}' enctype="multipart/form-data" method='post' class='uniForm'>

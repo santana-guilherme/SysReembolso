@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block content %}
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'refund/css/payment_queue.css' %}">
+{% endblock custom_extra_head %}
+{% block page_name %}
     <h2>{% trans 'Refund requests waiting payment'%}</h2>
+{% endblock page_name %}
+{% block content %}
     {%if refundbundle_list %}
     <table>
       <thead>
