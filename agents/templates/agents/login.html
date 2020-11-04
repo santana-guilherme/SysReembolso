@@ -1,8 +1,23 @@
-{% extends "base.html" %}
+{% extends "adminlte/login.html" %}
+{% load i18n %}
+{% block title %} Refund Me {% endblock title %}
+{% block extra_head %}
+    {% load static %}
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'images/favicon/favicon-background.png' %}"/>
+    <link rel="stylesheet" href="{% static 'agents/css/login.css' %}">
+{% endblock extra_head %}
+{% block logo %}
+    {% load static %}
+    <div class="login-logo">
+        <a href="{% block logo_href %}/{% endblock %}">
+            <img src="{% static 'agents/images/logo.png' %}" alt="logo" id='logo-img'/>
+        </a>
+    </div>
+{% endblock %}
 {% block content %}
-    <form method='post'>
+    <form method='post' class='form-signin'>
         {% csrf_token %}
         {{ form.as_p }}
-        <button> Entrar </button>
+        <button> {% trans 'LogIn' %} </button>
     </form>
 {% endblock content %}

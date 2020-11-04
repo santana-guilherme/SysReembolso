@@ -1,0 +1,9 @@
+#logo-img {
+    height: auto;
+    width: 300px;
+}
+
+.login-page {
+    background: url("../images/background.gif") no-repeat;
+    background-size:100%;
+}

@@ -1,0 +1,55 @@
+#info-content {
+    display: flex;
+    flex-direction: column;
+}
+#user-info h3, 
+#bank-info h3 {
+    width: 109px;
+}
+
+.block-info {
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid #008d4c;
+    padding: 20px;
+    width: 400px;
+    margin-bottom: 30px;
+}
+
+.block-info h3 {
+    color: #008d4c;
+    position: absolute;
+    margin: 0;
+    width: 155px;
+    text-align: center;
+    top:-16px;
+    background-color: #ecf0f5;
+
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+@media(min-width: 700px) {
+    #info-content {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .block-info {
+        margin-right: 30px;
+        width: 100%;
+    }
+
+    .block-info-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-group{
+        width: 85%;
+    }
+}
