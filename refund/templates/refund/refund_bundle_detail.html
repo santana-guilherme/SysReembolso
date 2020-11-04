@@ -35,22 +35,10 @@
             </ul>
         </div>
         {% if refund_bundle.refund_memo %}
-            <img src="{{refund_bundle.refund_memo.url}}" alt="nota fiscal de pagamento" class="refund-memo">
+            <div class="image-container">
+                <img src="{{refund_bundle.refund_memo.url}}" alt="nota fiscal de pagamento" class="refund-memo">
+            </div>
         {% endif %}
     </div>
-    {% comment %} <table>
-        <thead>
-        <tr>
-            <td>{% trans 'Name' %}</td>
-            <td>{% trans 'Price' %}</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td> {{ refund_bundle.user.first_name }} </td>
-            <td> R$ {{ refund_bundle.price }} </td>
-        </tr>
-        </tbody>
-    </table> {% endcomment %}
 {% endblock content %}
   

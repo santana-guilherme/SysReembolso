@@ -1,6 +1,8 @@
 #img_preview_container {
     display:inline-block;
     position: relative;
+    height: 520px;
+    width: auto;
 }
 
 

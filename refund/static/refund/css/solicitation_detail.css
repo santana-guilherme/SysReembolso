@@ -37,6 +37,11 @@
     max-width: 346px;
 }
 
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 @media(min-width: 700px) {
     .solicitation-content {

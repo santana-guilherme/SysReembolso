@@ -42,6 +42,11 @@
     max-width: 346px;/*TODO: improove*/
 }
 
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 @media(min-width: 700px) {
     .refund-content {
