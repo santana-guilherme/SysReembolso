@@ -14,7 +14,7 @@
         {% for refundbundle in refundbundle_list %}
         <tr>
           <td> <a href="{% url refundbundle_page refundbundle.id %}">Nº {{ refundbundle.id }}</a> </td>
-          <td> R$ {{ refundbundle.price }}</td>
+          <td> {% trans 'US$' %} {{ refundbundle.price }}</td>
         </tr>
         {% endfor %}
       </tbody>

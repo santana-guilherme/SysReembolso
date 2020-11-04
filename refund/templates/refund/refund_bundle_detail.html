@@ -29,7 +29,7 @@
                             {% endif %}">
                             {{ solicitation.name | title}}
                         </a>
-                    </b> -- R$ {{solicitation.price}}
+                    </b> -- {% trans 'US$' %} {{solicitation.price}}
                   </li>
               {% endfor %}
             </ul>

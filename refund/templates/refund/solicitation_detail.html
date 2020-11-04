@@ -31,7 +31,7 @@
         {% for item in solicitation.items.all %}
           <li
           class='{% if item.accepted is True %} green {% elif item.accepted is False %} red {% endif %}'>
-            <b>{{ item.name |title}}</b> -- R$ {{item.price}}
+            <b>{{ item.name |title}}</b> -- {% trans 'US$' %} {{item.price}}
           </li>
         {% endfor %}
       </ul>

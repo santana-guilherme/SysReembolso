@@ -1,25 +1,33 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'refund/css/analysis_queue.css' %}">
+{% endblock custom_extra_head %}
+
+{% block page_name %}
+    <h2>{% trans 'Solicitations in analysis' %}</h2>
+{% endblock page_name %}
+
 {% block content %}
-    <h2>Solicitações em análise</h2>
     {%if solicitations_list %}
     <table>
         <thead>
-        <tr>
-            <td>{% translate 'Name' %}</td>
-            <td>{% translate 'Price' %}</td>
-            <td>{% translate 'Creation date' %}</td>
-            <td>{% translate 'Last modification' %}</td>
-            <td>{% translate 'State' %}</td>
-        </tr>
+            <tr>
+                <th>{% translate 'Name' %}</th>
+                <th>{% translate 'Price' %}</th>
+                <th>{% translate 'Creation date' %}</th>
+                <th>{% translate 'Last modification' %}</th>
+                <th>{% translate 'State' %}</th>
+            </tr>
         </thead>
         <tbody>
         {% for solicitation in solicitations_list %}
         <tr>
             <td> <a href="{% url solicitation_page solicitation.id %}">{{ solicitation.name |title }}</a> </td>
-            <td> R$ {{ solicitation.price }}</td>
-            <td> {{ solicitation.created | date:"d-m-Y"}}</td>
-            <td> {{ solicitation.updated | date:"d-m-Y"}}</td>
+            <td> {% trans 'US$' %} {{ solicitation.price }}</td>
+            <td> {{ solicitation.created | date:"d/m/Y"}}</td>
+            <td> {{ solicitation.updated | date:"d/m/Y"}}</td>
             <td> {{ solicitation.get_state }} </td>
         </tr>
         {% endfor %}

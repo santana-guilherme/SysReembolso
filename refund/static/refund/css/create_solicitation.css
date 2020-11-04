@@ -5,6 +5,11 @@
     width: auto;
 }
 
+#img_preview {
+    height: 520px;
+    width: auto;
+}
+
 
 @media(min-width: 700px) {
     #div_id_name {
