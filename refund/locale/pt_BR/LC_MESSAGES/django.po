@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-03 13:02-0300\n"
+"POT-Creation-Date: 2020-11-04 09:09-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,8 +20,8 @@ msgstr ""
 
 #: forms.py:11 forms.py:26 forms.py:34
 #: templates/refund/analyse_solicitation.html:16
-#: templates/refund/analysis_queue.html:9 templates/refund/pay_refund.html:12
-#: templates/refund/refund_bundle_detail.html:8
+#: templates/refund/analysis_queue.html:9 templates/refund/pay_refund.html:15
+#: templates/refund/refund_bundle_detail.html:13
 #: templates/refund/solicitation_detail.html:13
 msgid "Name"
 msgstr "Nome"
@@ -32,9 +32,9 @@ msgstr "Nota fiscal"
 
 #: forms.py:27 forms.py:35 forms.py:49 forms.py:54
 #: templates/refund/analysis_queue.html:10
-#: templates/refund/finished_queue.html:10
+#: templates/refund/finished_queue.html:10 templates/refund/pay_refund.html:19
 #: templates/refund/payment_queue.html:10
-#: templates/refund/refund_bundle_detail.html:9
+#: templates/refund/refund_bundle_detail.html:17
 msgid "Price"
 msgstr "Preço"
 
@@ -66,7 +66,7 @@ msgid "There are not solicitations in analysis"
 msgstr "Não há solicitações em análise"
 
 #: templates/refund/create_solicitation.html:38
-#: templates/refund/pay_refund.html:15
+#: templates/refund/pay_refund.html:40
 msgid "Send"
 msgstr "Enviar"
 
@@ -86,15 +86,20 @@ msgstr "Código"
 msgid "There are no finished refunds"
 msgstr "Não há pedidos de reembolsos finalizados"
 
-#: templates/refund/pay_refund.html:6
+#: templates/refund/pay_refund.html:20
+#: templates/refund/refund_bundle_detail.html:18
+msgid "US$"
+msgstr "R$"
+
+#: templates/refund/pay_refund.html:23
 msgid "Account number"
 msgstr "Número da conta"
 
-#: templates/refund/pay_refund.html:8
+#: templates/refund/pay_refund.html:27
 msgid "Agency number"
 msgstr "Número da agência"
 
-#: templates/refund/pay_refund.html:10
+#: templates/refund/pay_refund.html:31
 msgid "Pix"
 msgstr "Pix"
 
@@ -110,11 +115,11 @@ msgstr "Aceita novas solicitações"
 msgid "There are no payments waiting"
 msgstr "Não há pagamentos a serem realizados"
 
-#: templates/refund/refund_bundle_detail.html:4
+#: templates/refund/refund_bundle_detail.html:9
 msgid "Refund bundle detail"
 msgstr "Detalhes do pagamento"
 
-#: templates/refund/refund_bundle_detail.html:19
+#: templates/refund/refund_bundle_detail.html:21
 msgid "Solicitations"
 msgstr "Solicitações"
 
@@ -130,7 +135,7 @@ msgstr "Solicitante"
 msgid "Solicitation items"
 msgstr "Items da solicitação"
 
-#: templates/refund/solicitation_detail.html:66
+#: templates/refund/solicitation_detail.html:45
 msgid "Edit"
 msgstr "Editar"
 

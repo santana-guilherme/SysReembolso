@@ -36,7 +36,9 @@
         {% endfor %}
       </ul>
     </div>
-    <img src="{{solicitation.claim_check.url}}" alt="nota fiscal" class="img_preview"/>
+    <div class="image-container">
+        <img src="{{solicitation.claim_check.url}}" alt="nota fiscal" class="img_preview"/>
+    </div>
   </div>
   {% if perms.refund.change_solicitation and solicitation.state == 0 %}
     <a href="{% url 'refund:update_solicitation' solicitation.id %}">
