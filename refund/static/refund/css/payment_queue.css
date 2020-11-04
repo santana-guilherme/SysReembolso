@@ -1,0 +1,13 @@
+table {
+    border-collapse: separate;
+    border-spacing: 7px;
+}
+
+td, th {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

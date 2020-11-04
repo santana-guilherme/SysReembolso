@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-04 09:58-0300\n"
+"POT-Creation-Date: 2020-11-04 11:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,8 +32,8 @@ msgstr "Nota fiscal"
 
 #: forms.py:27 forms.py:35 forms.py:49 forms.py:54
 #: templates/refund/analysis_queue.html:18
-#: templates/refund/finished_queue.html:10 templates/refund/pay_refund.html:19
-#: templates/refund/payment_queue.html:10
+#: templates/refund/finished_queue.html:16 templates/refund/pay_refund.html:19
+#: templates/refund/payment_queue.html:16
 #: templates/refund/refund_bundle_detail.html:17
 msgid "Price"
 msgstr "Preço"
@@ -61,13 +61,13 @@ msgid "Last modification"
 msgstr "Última modificação"
 
 #: templates/refund/analysis_queue.html:21
-#: templates/refund/payment_queue.html:11
+#: templates/refund/payment_queue.html:17
 msgid "State"
 msgstr "Estado"
 
 #: templates/refund/analysis_queue.html:28
-#: templates/refund/finished_queue.html:17 templates/refund/pay_refund.html:20
-#: templates/refund/payment_queue.html:19
+#: templates/refund/finished_queue.html:23 templates/refund/pay_refund.html:20
+#: templates/refund/payment_queue.html:25
 #: templates/refund/refund_bundle_detail.html:18
 #: templates/refund/refund_bundle_detail.html:32
 #: templates/refund/solicitation_detail.html:34
@@ -78,12 +78,16 @@ msgstr "R$"
 msgid "There are not solicitations in analysis"
 msgstr "Não há solicitações em análise"
 
-#: templates/refund/create_solicitation.html:38
+#: templates/refund/create_solicitation.html:13
+msgid "Create solicitation"
+msgstr "Criar solicitação"
+
+#: templates/refund/create_solicitation.html:41
 #: templates/refund/pay_refund.html:40
 msgid "Send"
 msgstr "Enviar"
 
-#: templates/refund/create_solicitation.html:40
+#: templates/refund/create_solicitation.html:43
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -91,11 +95,12 @@ msgstr "Cancelar"
 msgid "Finished refunds"
 msgstr "Reembolsos finalizados"
 
-#: templates/refund/finished_queue.html:9 templates/refund/payment_queue.html:9
+#: templates/refund/finished_queue.html:15
+#: templates/refund/payment_queue.html:15
 msgid "Code"
 msgstr "Código"
 
-#: templates/refund/finished_queue.html:23
+#: templates/refund/finished_queue.html:29
 msgid "There are no finished refunds"
 msgstr "Não há pedidos de reembolsos finalizados"
 
@@ -111,15 +116,15 @@ msgstr "Número da agência"
 msgid "Pix"
 msgstr "Pix"
 
-#: templates/refund/payment_queue.html:4
+#: templates/refund/payment_queue.html:8
 msgid "Refund requests waiting payment"
 msgstr "Pedidos aguardando pagamento"
 
-#: templates/refund/payment_queue.html:12
+#: templates/refund/payment_queue.html:18
 msgid "Accept new solicitations"
 msgstr "Aceita novas solicitações"
 
-#: templates/refund/payment_queue.html:27
+#: templates/refund/payment_queue.html:33
 msgid "There are no payments waiting"
 msgstr "Não há pagamentos a serem realizados"
 
