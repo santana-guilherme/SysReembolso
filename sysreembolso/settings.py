@@ -156,5 +156,5 @@ LANGUAGES = [
     ('pt-br', _('Portuguese')),
 ]
 
-#CRISPY 
+#CRISPY
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,8 +1,39 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block custom_extra_head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'agents/css/register_user.css' %}">
+{% endblock custom_extra_head %}
 {% block content %}
     <form action='/agents/register' method='post'>
         {% csrf_token %}
-        {{ form.as_p }}
-    <button> Enviar </button>
+        <div id="info-content">
+            <div class="block-info">
+                <h3>{% trans 'Your basic info'%}</h3>
+                <div class="block-info-content">
+                    {{form.first_name |as_crispy_field}}
+                    {{form.last_name |as_crispy_field}}
+                </div>
+            </div>
+            <div class="block-info" id='bank-info'>
+                <h3>{% trans 'Bank info'%}</h3>
+                <div class="block-info-content">
+                    {{form.pix |as_crispy_field}}
+                    {{form.account_number |as_crispy_field}}
+                    {{form.agency_number |as_crispy_field}}
+                </div>
+            </div>
+            <div class="block-info" id='user-info'>
+                <h3>{% trans 'User info'%}</h3>
+                <div class="block-info-content">
+                    {{form.username |as_crispy_field}}
+                    {{form.password |as_crispy_field}}
+                    {{form.email |as_crispy_field}}
+                    {{form.groups |as_crispy_field}}
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary"> Enviar </button>
     </form>
 {% endblock content %}
