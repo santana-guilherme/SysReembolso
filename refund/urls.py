@@ -6,6 +6,8 @@ app_name = 'refund'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('dashboard', views.dashboard, name='dashboard'),
+    path('refund_by_user', views.refund_by_user, name='refund_by_user'),
     path('analysis', views.analysis_queue, name='analysis_queue'),
     path('payments', views.payment_queue, name='payment_queue'),
     path('finished', views.finished_queue, name='finished_queue'),
