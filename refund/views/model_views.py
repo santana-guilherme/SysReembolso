@@ -1,17 +1,24 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
-from .forms import get_item_solicitation_formset, SolicitationForm, \
-    AnalyseItemsSolicitationFormSet, UpdateRefundBundleForm, UpdateRefundBundleModelForm
-from .models import AnalysisQueue, FinishedQueue, PaymentQueue, \
+from refund.forms import get_item_solicitation_formset, SolicitationForm, \
+    AnalyseItemsSolicitationFormSet, UpdateRefundBundleModelForm
+from refund.models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
-from .utils import is_analyst, is_member, is_treasurer
+from refund.utils import is_analyst, is_member, is_treasurer
 # Create your views here.
 
 
 def index(request):
     return render( request, 'base.html', {} )
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/agents/login')
+def dashboard(request):
+    return render(
+        request,
+        'refund/dashboard.html'
+    )
 
 @login_required(login_url='/agents/login')
 def analysis_queue(request):
