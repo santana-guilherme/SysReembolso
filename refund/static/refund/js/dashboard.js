@@ -3,7 +3,7 @@ $(document).ready(() => {
     $.ajax({
         url: refunds_by_user.data('url'),
         success: (data) => {
-           barChart(data, refunds_by_user)
+           barChart(data, refunds_by_user, "Finished refunds by user")
         }
     })
 
@@ -11,12 +11,20 @@ $(document).ready(() => {
     $.ajax({
         url:  solicitations_by_date.data('url'),
         success: (data) => {
-            barChart(data, solicitations_by_date)
+            barChart(data, solicitations_by_date, "Solicitations by month")
+        }
+    })
+
+    const solicitations_overview = $('#solicitations_overview')
+    $.ajax({
+        url:  solicitations_overview.data('url'),
+        success: (data) => {
+            doughnutChart(data, solicitations_overview, "Solicitations Overview")
         }
     })
 })
 
-function barChart(data, el) {
+function barChart(data, el, title) {
     var ctx  = el[0].getContext('2d');
     new Chart(ctx,{
         type: 'bar',
@@ -32,7 +40,7 @@ function barChart(data, el) {
             legend:{ position: 'top' },
             title: {
                 display: true,
-                text: 'Refunds by user'
+                text: title
             },
             scales: {
                 yAxes: [{ ticks: { min: 0 } }]
@@ -45,6 +53,33 @@ function barChart(data, el) {
             layout: {
                 width: 300,
                 height: 300
+            }
+        }
+    })
+}
+
+function doughnutChart(data, el, title) {
+    var ctx  = el[0].getContext('2d');
+    new Chart(ctx,{
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Solicitations',
+                data: data.data,
+            }]
+        },
+        options: {
+            responsive: true,
+            legend:{ position: 'bottom' },
+            title: {
+                display: true,
+                text: title
+            },
+            plugins: {
+                colorschemes: {
+                    scheme: 'brewer.Paired12'
+                }
             }
         }
     })

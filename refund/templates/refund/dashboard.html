@@ -16,4 +16,7 @@
     <div class="chart-container">
         <canvas id="solicitations_by_month" data-url="{% url 'refund:solicitations_by_month' %}"></canvas>
     </div>
+    <div class="chart-container">
+        <canvas id="solicitations_overview" data-url="{% url 'refund:solicitations_overview_per_month' %}"></canvas>
+    </div>
 {% endblock content %}
