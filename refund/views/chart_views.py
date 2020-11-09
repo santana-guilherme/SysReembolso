@@ -6,7 +6,7 @@ from refund.models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
 
 
-def refunds_by_user(request): #TODO: colocar data na model de refund bundle
+def refunds_by_user(request):  # TODO: colocar data na model de refund bundle
     """
         return the total price of users refund
     """
@@ -16,17 +16,35 @@ def refunds_by_user(request): #TODO: colocar data na model de refund bundle
     data = []
     labels = []
     for entry in refund_queryset:
-        labels.append(entry['user__first_name'] + ' ' + entry['user__last_name'])
+        labels.append(entry['user__first_name'] +
+                      ' ' + entry['user__last_name'])
         data.append(entry['total_refund'])
     return JsonResponse(data={
         'labels': labels,
         'data': data
     }, safe=False)
 
+
 def solicitations_by_month(request):
+    solicitations = Solicitation.objects.values('created__month').annotate(
+        num_solicitations=Count('name'))
+    labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+              'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+    data = [0]*12
+    for entry in solicitations:
+        data[entry['created__month']-1] = entry['num_solicitations']
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data
+    }, safe=False)
+
+
+def solicitations_price_by_month(request):
     solicitations = Solicitation.objects.values(
         'created__month').annotate(Sum('price'))
-    labels = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+    labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+              'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     data = [0]*12
     for entry in solicitations:
         data[entry['created__month']-1] = entry['price__sum']
@@ -35,6 +53,7 @@ def solicitations_by_month(request):
         'labels': labels,
         'data': data
     }, safe=False)
+
 
 def solicitations_by_user_by_month(request):
     """
@@ -46,24 +65,27 @@ def solicitations_by_user_by_month(request):
     data = []
     labels = []
     for entry in refund_queryset:
-        labels.append(entry['user__first_name'] + ' ' + entry['user__last_name'])
+        labels.append(entry['user__first_name'] +
+                      ' ' + entry['user__last_name'])
         data.append(entry['total_refund'])
     return JsonResponse(data={
         'labels': labels,
         'data': data
     }, safe=False)
 
+
 def solicitations_overview_per_month(request):
     current_month = datetime.now().month
-    solicitations_in_analysis = Solicitation.objects.filter(
-        state=0, updated__month=current_month).count()
-    solicitations_waiting_payment = Solicitation.objects.filter(
-        state=1, updated__month=current_month).count()
-    solicitations_finished = Solicitation.objects.filter(
-        state=2, updated__month=current_month).count()
+    solicitations = Solicitation.objects.filter(updated__month=current_month).values(
+        'state').annotate(num_solicitations=Count('name'))
+
+    labels = ['Em análise', 'Aguardando pagamento', 'Finalizada']
+    data = [0] * 3
+
+    for entry in solicitations:
+        data[entry['state']] = entry['num_solicitations']
 
     return JsonResponse(data={
-        'labels': ['Em análise', 'Aguardando Pagamento', 'Finalizadas'],
-        'data': [solicitations_in_analysis, solicitations_waiting_payment,
-                solicitations_finished]
+        'labels': labels,
+        'data': data
     })

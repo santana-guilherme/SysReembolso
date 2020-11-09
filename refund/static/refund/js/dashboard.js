@@ -7,11 +7,11 @@ $(document).ready(() => {
         }
     })
 
-    const solicitations_by_date = $('#solicitations_by_month')
+    const solicitations_by_date = $('#solicitations_price_by_month')
     $.ajax({
         url:  solicitations_by_date.data('url'),
         success: (data) => {
-            barChart(data, solicitations_by_date, "Solicitations by month")
+            barChart(data, solicitations_by_date, "Gastos com solicitatção por mês")
         }
     })
 
@@ -20,6 +20,14 @@ $(document).ready(() => {
         url:  solicitations_overview.data('url'),
         success: (data) => {
             doughnutChart(data, solicitations_overview, "Solicitations Overview")
+        }
+    })
+
+    const solicitations_by_month = $('#solicitations_by_month')
+    $.ajax({
+        url:  solicitations_by_month.data('url'),
+        success: (data) => {
+            lineChart(data, solicitations_by_month, "Nº of solicitations by month")
         }
     })
 })
@@ -50,10 +58,6 @@ function barChart(data, el, title) {
                     scheme: 'brewer.Paired12'
                 }
             },
-            layout: {
-                width: 300,
-                height: 300
-            }
         }
     })
 }
@@ -72,6 +76,33 @@ function doughnutChart(data, el, title) {
         options: {
             responsive: true,
             legend:{ position: 'bottom' },
+            title: {
+                display: true,
+                text: title
+            },
+            plugins: {
+                colorschemes: {
+                    scheme: 'brewer.Paired12'
+                }
+            }
+        }
+    })
+}
+
+function lineChart(data, el, title) {
+    var ctx  = el[0].getContext('2d');
+    new Chart(ctx,{
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Solicitations',
+                data: data.data,
+            }]
+        },
+        options: {
+            responsive: true,
+            legend:{ position: 'top' },
             title: {
                 display: true,
                 text: title
