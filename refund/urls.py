@@ -31,7 +31,10 @@ urlpatterns = [
         name='refundbundle_detail'
     ),
     path('refunds_by_user', views.refunds_by_user, name='refunds_by_user'),
-    path('solicitations_by_month', views.solicitations_by_month, name='solicitations_by_month'),
+    path('solicitations_price_by_month', views.solicitations_price_by_month,
+        name='solicitations_price_by_month'),
     path('solicitations_overview_per_month',
         views.solicitations_overview_per_month, name='solicitations_overview_per_month'),
+    path('solicitations_by_month',
+        views.solicitations_by_month, name='solicitations_by_month'),
 ]
