@@ -160,10 +160,8 @@ class Solicitation(models.Model):
 
     def finalize(self):
         if self.all_itens_resolved() and self.state == 1:
-            if self.price > 0:  # falta verificar se refund_bundle tem uma nota fiscal
-                self.state = 2
-            else:
-                self.state = 2
+            self.state = 2
+            self.save()
         else:
             raise RuntimeError(f'Solicitation {self.name} can\'t '
                                'be finished because there are still itens that need to be resolved')
