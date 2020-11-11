@@ -39,8 +39,13 @@ function barChart(data, el, title) {
         data: {
             labels: data.labels,
             datasets: [{
-                label: 'Refund',
+                label: 'Refund price',
                 data: data.data,
+                backgroundColor: data.colors.map(color => {
+                    return color+'78'
+                }),
+                borderColor: data.colors,
+                borderWidth:3
             }]
         },
         options: {
@@ -51,12 +56,7 @@ function barChart(data, el, title) {
                 text: title
             },
             scales: {
-                yAxes: [{ ticks: { min: 0 } }]
-            },
-            plugins: {
-                colorschemes: {
-                    scheme: 'brewer.Paired12'
-                }
+                yAxes: [{ ticks: { beginAtZero: true } }]
             },
         }
     })
@@ -98,6 +98,9 @@ function lineChart(data, el, title) {
             datasets: [{
                 label: 'Solicitations',
                 data: data.data,
+                borderColor: data.colors,
+                backgroundColor: data.colors[0]+'78',
+                borderWidth:5
             }]
         },
         options: {
@@ -106,11 +109,6 @@ function lineChart(data, el, title) {
             title: {
                 display: true,
                 text: title
-            },
-            plugins: {
-                colorschemes: {
-                    scheme: 'brewer.Paired12'
-                }
             }
         }
     })
