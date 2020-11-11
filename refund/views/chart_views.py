@@ -2,9 +2,25 @@ from datetime import datetime
 from django.db.models.aggregates import Sum
 from django.http import JsonResponse
 from django.db.models import Count
+from random import choice
 from refund.models import AnalysisQueue, FinishedQueue, PaymentQueue, \
     Solicitation, RefundBundle, ItemSolicitation
 
+
+def get_random_colors_array(num_colors):
+    colors_arr = []
+    for x in range(num_colors):
+        colors_arr.append(generate_color())
+
+    return colors_arr
+
+def generate_color():
+    opts = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
+    final_color = '#'
+    for x in range(6):
+        el = choice(opts)
+        final_color+=el
+    return final_color
 
 def refunds_by_user(request):  # TODO: colocar data na model de refund bundle
     """
@@ -19,9 +35,13 @@ def refunds_by_user(request):  # TODO: colocar data na model de refund bundle
         labels.append(entry['user__first_name'] +
                       ' ' + entry['user__last_name'])
         data.append(entry['total_refund'])
+
+    colors = get_random_colors_array(len(labels))
+
     return JsonResponse(data={
         'labels': labels,
-        'data': data
+        'data': data,
+        'colors': colors
     }, safe=False)
 
 
@@ -34,9 +54,12 @@ def solicitations_by_month(request):
     for entry in solicitations:
         data[entry['created__month']-1] = entry['num_solicitations']
 
+    colors = get_random_colors_array(1)
+
     return JsonResponse(data={
         'labels': labels,
-        'data': data
+        'data': data,
+        'colors': colors
     }, safe=False)
 
 
@@ -49,9 +72,12 @@ def solicitations_price_by_month(request):
     for entry in solicitations:
         data[entry['created__month']-1] = entry['price__sum']
 
+    colors = get_random_colors_array(len(labels))
+
     return JsonResponse(data={
         'labels': labels,
-        'data': data
+        'data': data,
+        'colors': colors
     }, safe=False)
 
 
@@ -68,9 +94,11 @@ def solicitations_by_user_by_month(request):
         labels.append(entry['user__first_name'] +
                       ' ' + entry['user__last_name'])
         data.append(entry['total_refund'])
+    colors = get_random_colors_array(len(labels))
     return JsonResponse(data={
         'labels': labels,
-        'data': data
+        'data': data,
+        'colors':colors
     }, safe=False)
 
 
@@ -84,8 +112,11 @@ def solicitations_overview_per_month(request):
 
     for entry in solicitations:
         data[entry['state']] = entry['num_solicitations']
+    
+    colors = get_random_colors_array(len(labels))
 
     return JsonResponse(data={
         'labels': labels,
-        'data': data
+        'data': data,
+        'colors': colors
     })
