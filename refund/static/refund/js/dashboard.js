@@ -1,3 +1,5 @@
+const OVERALL_CHART_COLOR = 'white'
+
 $(document).ready(() => {
     const refunds_by_user = $('#refunds_by_user')
     $.ajax({
@@ -50,13 +52,24 @@ function barChart(data, el, title) {
         },
         options: {
             responsive: true,
-            legend:{ position: 'top' },
+            legend:{ position: 'top', labels: { fontColor: OVERALL_CHART_COLOR} },
             title: {
                 display: true,
-                text: title
+                text: title,
+                fontColor: OVERALL_CHART_COLOR
             },
             scales: {
-                yAxes: [{ ticks: { beginAtZero: true } }]
+                yAxes: [{ 
+                    ticks: { beginAtZero: true, fontColor:OVERALL_CHART_COLOR },
+                    scaleLabel:{display: true, labelString:'R$', fontColor: OVERALL_CHART_COLOR},
+                    gridLines: {color: OVERALL_CHART_COLOR}
+                }],
+                xAxes: [{
+                    gridLines: { display: false },
+                    ticks: {
+                        minor: { fontColor:OVERALL_CHART_COLOR }
+                    }
+                }]
             },
         }
     })
@@ -75,10 +88,11 @@ function doughnutChart(data, el, title) {
         },
         options: {
             responsive: true,
-            legend:{ position: 'bottom' },
+            legend:{ position: 'bottom', labels: { fontColor: OVERALL_CHART_COLOR} },
             title: {
                 display: true,
-                text: title
+                text: title,
+                fontColor: OVERALL_CHART_COLOR
             },
             plugins: {
                 colorschemes: {
@@ -100,15 +114,26 @@ function lineChart(data, el, title) {
                 data: data.data,
                 borderColor: data.colors,
                 backgroundColor: data.colors[0]+'78',
-                borderWidth:5
+                borderWidth:3
             }]
         },
         options: {
             responsive: true,
-            legend:{ position: 'top' },
+            legend:{ position: 'top', labels: { fontColor: OVERALL_CHART_COLOR} },
             title: {
                 display: true,
-                text: title
+                text: title,
+                fontColor: OVERALL_CHART_COLOR
+            },
+            scales: {
+                yAxes:[{
+                    ticks: { fontColor: OVERALL_CHART_COLOR },
+                    gridLines: { color: OVERALL_CHART_COLOR }
+                }],
+                xAxes: [{
+                    ticks: { minor: { fontColor:OVERALL_CHART_COLOR } },
+                    gridLines: { color: OVERALL_CHART_COLOR }
+                }]
             }
         }
     })
