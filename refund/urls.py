@@ -6,11 +6,11 @@ app_name = 'refund'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('home', views.redirect_user_home, name='redirect_home'),
     path('dashboard', views.dashboard, name='dashboard'),
     path('analysis', views.analysis_queue, name='analysis_queue'),
     path('payments', views.payment_queue, name='payment_queue'),
     path('finished', views.finished_queue, name='finished_queue'),
-    path('user', views.teste_logged_user, name='logged_user'),
     path('create_solicitation', views.create_solicitation,
          name='create_solicitation'),
     re_path(r'^pay_refund/(?P<refundbundle_id>\d*)',

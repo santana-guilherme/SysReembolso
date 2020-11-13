@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from django.core import serializers
+from django.http import HttpResponse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from refund.forms import get_item_solicitation_formset, SolicitationForm, \
     AnalyseItemsSolicitationFormSet, UpdateRefundBundleModelForm
@@ -121,7 +121,7 @@ def create_solicitation(request):
             for item in items:
                 item.solicitation = new_solicitation
                 item.save()
-            return redirect('refund:index')
+            return redirect('refund:redirect_home')
     else:
         ItemSolicitationFormset = get_item_solicitation_formset(extra=1)
         formset = ItemSolicitationFormset(
@@ -146,7 +146,7 @@ def analyse_solicitation(request, solicitation_id):
         if formset.is_valid():
             formset.save()
             solicitation.authorize()
-            return redirect('refund:index')
+            return redirect('refund:redirect_home')
     else:
         formset = AnalyseItemsSolicitationFormSet(
             queryset=ItemSolicitation.objects.filter(solicitation=solicitation)
@@ -203,14 +203,14 @@ def update_solicitation(request, solicitation_id):
 def pay_refundbundle(request, refundbundle_id):
     refundbundle = get_object_or_404(RefundBundle, id=refundbundle_id)
     if refundbundle.state > 0:
-        return redirect('refund:index')
+        return redirect('refund:redirect_home')
 
     if request.method == 'POST':
         form = UpdateRefundBundleModelForm(request.POST, request.FILES, instance=refundbundle)
         if form.is_valid():
             received_refundbundle = form.save()
             received_refundbundle.finish_refund()
-            return redirect('refund:index')
+            return redirect('refund:redirect_home')
         else:
             print(form)
 
@@ -223,6 +223,11 @@ def pay_refundbundle(request, refundbundle_id):
     )
 
 
-def teste_logged_user(request):
-    print(request.user)
-    return HttpResponse(request.user.username)
+def redirect_user_home(request):
+    user = request.user
+    if user.is_superuser:
+        return redirect('refund:dashboard')
+    elif is_treasurer(user):
+        return redirect('refund:payment_queue')
+    else:
+        return redirect('refund:analysis_queue')
