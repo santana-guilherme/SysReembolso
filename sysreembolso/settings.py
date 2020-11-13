@@ -140,7 +140,7 @@ MEDIA_URL = '/media/'
 
 #LOGIN & LOGOUT
 LOGOUT_URL='/agents/logout'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/refund/home'
 LOGOUT_REDIRECT_URL = '/'
 
 
