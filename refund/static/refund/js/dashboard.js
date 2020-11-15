@@ -1,11 +1,11 @@
-const OVERALL_CHART_COLOR = 'white'
+const OVERALL_CHART_COLOR = '#ccccce'
 
 $(document).ready(() => {
     const refunds_by_user = $('#refunds_by_user')
     $.ajax({
         url: refunds_by_user.data('url'),
         success: (data) => {
-           barChart(data, refunds_by_user, "Finished refunds by user")
+           barChart(data, refunds_by_user, "Reembolsos finalizados/usuários")
         }
     })
 
@@ -21,7 +21,7 @@ $(document).ready(() => {
     $.ajax({
         url:  solicitations_overview.data('url'),
         success: (data) => {
-            doughnutChart(data, solicitations_overview, "Solicitations Overview")
+            doughnutChart(data, solicitations_overview, "Estado geral das solicitações/mês")
         }
     })
 
@@ -44,7 +44,7 @@ function barChart(data, el, title) {
                 label: 'Refund price',
                 data: data.data,
                 backgroundColor: data.colors.map(color => {
-                    return color+'78'
+                    return color+'E2'
                 }),
                 borderColor: data.colors,
                 borderWidth:3
@@ -113,7 +113,7 @@ function lineChart(data, el, title) {
                 label: 'Solicitations',
                 data: data.data,
                 borderColor: data.colors,
-                backgroundColor: data.colors[0]+'78',
+                backgroundColor: data.colors[0]+'E2',
                 borderWidth:3
             }]
         },
